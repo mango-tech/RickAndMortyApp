@@ -1,6 +1,8 @@
 plugins {
     id 'com.android.application'
     id 'kotlin-android'
+    id 'kotlin-kapt'
+    id 'dagger.hilt.android.plugin'
 }
 
 android {
@@ -17,6 +19,9 @@ android {
         versionName "1.0"
 
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+
+        multiDexEnabled true
+
     }
 
     buildTypes {
@@ -31,10 +36,22 @@ android {
     }
 }
 
+kapt {
+    correctErrorTypes true
+}
+
 dependencies {
-    implementation 'com.android.support:appcompat-v7:28.0.0'
-    implementation 'com.android.support:recyclerview-v7:28.0.0'
+    def presenterDependencies = rootProject.ext.presenterDependencies
+
     implementation project(path: ':data')
     implementation project(path: ':domain')
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    implementation presenterDependencies.kotlin
+    implementation presenterDependencies.core_ktx
+    implementation presenterDependencies.multidex
+    implementation presenterDependencies.hilt
+    implementation presenterDependencies.hilt_viewmodel
+    kapt presenterDependencies.hilt_compiler
+    kapt presenterDependencies.hilt_android_compiler
+
+
 }

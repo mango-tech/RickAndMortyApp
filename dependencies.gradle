@@ -17,6 +17,22 @@ ext {
     core_ktx_version = "1.6.0"
     mockk_version = "1.12.0"
     dex_opener_version = "2.0.5"
+    hilt_version = "2.38.1"
+    hilt_viewmodel_version = "1.0.0-alpha02"
+    hilt_compiler = "1.0.0-alpha02"
+    multidex_version = "2.0.1"
+
+
+    presenterDependencies = [
+            kotlin               : "org.jetbrains.kotlin:kotlin-stdlib-jdk7:${ext.kotlin_version}",
+            core_ktx             : "androidx.core:core-ktx:$ext.core_ktx_version",
+            hilt                 : "com.google.dagger:hilt-android:$ext.hilt_version",
+            hilt_android_compiler: "com.google.dagger:hilt-android-compiler:$ext.hilt_version",
+            hilt_viewmodel       : "androidx.hilt:hilt-lifecycle-viewmodel:$ext.hilt_viewmodel_version",
+            hilt_compiler        : "androidx.hilt:hilt-compiler:$ext.hilt_compiler",
+            multidex             : "androidx.multidex:multidex:$ext.multidex_version"
+
+    ]
 
     dataDependencies = [
             kotlin          : "org.jetbrains.kotlin:kotlin-stdlib-jdk7:${ext.kotlin_version}",
