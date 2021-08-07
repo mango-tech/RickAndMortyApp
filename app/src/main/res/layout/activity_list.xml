@@ -4,10 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-
         <variable
-            name="charactersList"
-            type="com.mango.android.domain.entity.CharacterEntity" />
+            name="viewModel"
+            type="com.mango.android.rickmortyapp.ui.list.ListViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -24,12 +23,13 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
-<!--app:data="@{charactersList}"-->
+
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recyclerViewItems"
-
                 android:layout_width="match_parent"
-                android:layout_height="match_parent" />
+                android:layout_height="match_parent"
+                tools:listitem="@layout/item_character"
+                app:data="@{viewModel.characters}" />
 
         </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 

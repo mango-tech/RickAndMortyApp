@@ -1,9 +1,13 @@
 package com.mango.android.rickmortyapp.ui.list
 
-import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.databinding.BindingAdapter
+import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProviders
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.mango.android.domain.entity.CharacterEntity
 import com.mango.android.rickmortyapp.databinding.ActivityListBinding
 import com.mango.android.rickmortyapp.di.ViewModelFactory
 import com.mango.android.rickmortyapp.ui.NavigatorController
@@ -13,8 +17,6 @@ import javax.inject.Inject
 @AndroidEntryPoint
 class ListActivity : AppCompatActivity() {
 
-    lateinit var viewModel: ListViewModel
-
     @Inject
     lateinit var navigator: NavigatorController
 
@@ -22,6 +24,8 @@ class ListActivity : AppCompatActivity() {
     lateinit var viewModelFactory: ViewModelFactory
 
     private lateinit var binding: ActivityListBinding
+    private lateinit var viewModel: ListViewModel
+    private lateinit var adapter: CharacterAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -30,11 +34,25 @@ class ListActivity : AppCompatActivity() {
 
         bindView()
         bindViewModel()
+
+        binding.viewModel = viewModel
+        binding.lifecycleOwner = this
     }
 
-    private fun bindView(){
-        binding.swipeRefresh.setOnRefreshListener {
-            viewModel.reset()
+    private fun bindView() {
+        binding.swipeRefresh.setOnRefreshListener { viewModel.reset() }
+
+        adapter = CharacterAdapter()
+        adapter.onDisplayLastItem = { viewModel.loadNextPage() }
+        adapter.onItemClick = { displayDetail(it.id) }
+
+        binding.recyclerViewItems.layoutManager = LinearLayoutManager(this)
+        binding.recyclerViewItems.adapter = adapter
+    }
+
+    private fun displayDetail(id: Int) {
+        navigator.openDetail(this, id) {
+            // Nothing, should refresh?
         }
     }
 
@@ -44,27 +62,36 @@ class ListActivity : AppCompatActivity() {
 
         viewModel.state.observe(this, { state ->
             when (state) {
-                ListViewModel.State.ErrorLoading -> {
+                ListViewModel.State.ErrorLoading ->
                     navigator.openError(this) {
                         viewModel.reset()
                     }
-                }
-                ListViewModel.State.Loaded, ListViewModel.State.LoadedEndOfData -> {
-                    // TODO Put the data on the adapter and notify
+
+                ListViewModel.State.Loaded, ListViewModel.State.LoadedEndOfData ->
                     binding.swipeRefresh.isRefreshing = false
-                }
-                ListViewModel.State.Loading -> {
+
+                ListViewModel.State.Loading ->
                     binding.swipeRefresh.isRefreshing = true
-                }
-                ListViewModel.State.NotInit, null -> {
+
+                ListViewModel.State.NotInit, null ->
                     viewModel.loadNextPage()
-                }
+
             }
-        })
-
-        viewModel.characters.observe(this, { items ->
-
         })
     }
 
+    companion object {
+        @JvmStatic
+        @BindingAdapter("data")
+        fun setRecyclerViewProperties(recyclerView: RecyclerView?, data: List<CharacterEntity>?) {
+            val adapter = recyclerView?.adapter
+            if (adapter is CharacterAdapter) {
+                data?.let {
+                    adapter.setData(it)
+                }
+            }
+        }
+    }
+
 }
+

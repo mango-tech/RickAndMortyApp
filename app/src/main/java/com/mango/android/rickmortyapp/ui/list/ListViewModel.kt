@@ -17,7 +17,7 @@ import javax.inject.Inject
 
 class ListViewModel @Inject constructor(private val getCharacters: GetCharacters) : ViewModel() {
 
-    private val mCharacters = MutableLiveData<MutableList<CharacterEntity>>()
+    private val mCharacters = MutableLiveData<MutableList<CharacterEntity>>(mutableListOf())
     private val mState = MutableLiveData(State.NotInit)
     private val mCurrentPage = MutableLiveData(0)
 
