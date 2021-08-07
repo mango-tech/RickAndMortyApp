@@ -13,7 +13,7 @@ android {
         versionCode 1
         versionName "1.0"
 
-        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner "com.mango.android.domain.CustomAndroidJUnitRunner"
         consumerProguardFiles "consumer-rules.pro"
     }
 
@@ -34,10 +34,18 @@ android {
 
 dependencies {
 
-    implementation 'androidx.core:core-ktx:1.6.0'
-    implementation 'androidx.appcompat:appcompat:1.3.1'
-    implementation 'com.google.android.material:material:1.4.0'
-    testImplementation 'junit:junit:4.13.2'
-    androidTestImplementation 'androidx.test.ext:junit:1.1.3'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
+    def domainDependencies = rootProject.ext.domainDependencies
+    def domainTestDependencies = rootProject.ext.domainTestDependencies
+
+    implementation domainDependencies.kotlin
+    implementation domainDependencies.core_ktx
+
+    testImplementation domainTestDependencies.junit
+    testImplementation domainTestDependencies.mockk
+    testImplementation domainTestDependencies.dexopener
+    testImplementation domainTestDependencies.junit_ext
+    testImplementation domainTestDependencies.test_runner
+    testImplementation domainTestDependencies.core_testing
+    testImplementation domainTestDependencies.kotlin_coroutines_test
+
 }

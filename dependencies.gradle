@@ -1,33 +1,50 @@
 ext {
-        kotlin_version                  = '1.5.30-M1'
-        coroutines_version              = "1.4.1"
-        coroutines_test_version         = "1.4.1"
-        retrofit_version                = "2.9.0"
-        retrofit_jackson_version        = "2.9.0"
-        junit_version                   = "4.13.2"
-        junit_ext_version               = "1.1.3"
-        test_runner_version             = "1.0.2"
-        test_espresso_version           = "3.4.0"
-        core_testing_version            = "2.1.0"
-        core_ktx_version                = "1.6.0"
+    kotlin_version = '1.5.30-M1'
+    coroutines_version = "1.4.1"
+    coroutines_test_version = "1.4.1"
+    retrofit_version = "2.9.0"
+    retrofit_jackson_version = "2.9.0"
+    junit_version = "4.13.2"
+    junit_ext_version = "1.1.3"
+    test_runner_version = "1.4.0"
+    test_espresso_version = "3.4.0"
+    core_testing_version = "2.1.0"
+    core_ktx_version = "1.6.0"
+    mockk_version = "1.12.0"
+    dex_opener_version = "2.0.5"
 
-        dataDependencies = [
-                kotlin : "org.jetbrains.kotlin:kotlin-stdlib-jdk7:${ext.kotlin_version}",
-                core_ktx: "androidx.core:core-ktx:$ext.core_ktx_version",
-                retrofit: "com.squareup.retrofit2:retrofit:$ext.retrofit_version",
-                coroutines: "org.jetbrains.kotlinx:kotlinx-coroutines-android:$ext.coroutines_version",
-                retrofit_jackson : "com.squareup.retrofit2:converter-jackson:${ext.retrofit_jackson_version}",
-        ]
+    dataDependencies = [
+            kotlin          : "org.jetbrains.kotlin:kotlin-stdlib-jdk7:${ext.kotlin_version}",
+            core_ktx        : "androidx.core:core-ktx:$ext.core_ktx_version",
+            retrofit        : "com.squareup.retrofit2:retrofit:$ext.retrofit_version",
+            coroutines      : "org.jetbrains.kotlinx:kotlinx-coroutines-android:$ext.coroutines_version",
+            retrofit_jackson: "com.squareup.retrofit2:converter-jackson:${ext.retrofit_jackson_version}",
+    ]
 
-        dataTestDependencies = [
-                junit: "junit:junit:$ext.junit_version"
-        ]
+    dataTestDependencies = [
+            junit: "junit:junit:$ext.junit_version"
+    ]
 
-        dataAndroidTestDependencies = [
-                espresso_core: "androidx.test.espresso:espresso-core:$ext.test_espresso_version",
-                core_testing: "androidx.arch.core:core-testing:$ext.core_testing_version",
-                kotlin_coroutines_test: "org.jetbrains.kotlinx:kotlinx-coroutines-test:$ext.coroutines_test_version",
-                junit_ext: "androidx.test.ext:junit:$ext.junit_ext_version",
+    dataAndroidTestDependencies = [
+            espresso_core         : "androidx.test.espresso:espresso-core:$ext.test_espresso_version",
+            core_testing          : "androidx.arch.core:core-testing:$ext.core_testing_version",
+            kotlin_coroutines_test: "org.jetbrains.kotlinx:kotlinx-coroutines-test:$ext.coroutines_test_version",
+            junit_ext             : "androidx.test.ext:junit:$ext.junit_ext_version",
 
-        ]
+    ]
+
+    domainDependencies = [
+            kotlin  : "org.jetbrains.kotlin:kotlin-stdlib-jdk7:${ext.kotlin_version}",
+            core_ktx: "androidx.core:core-ktx:$ext.core_ktx_version",
+    ]
+
+    domainTestDependencies = [
+            mockk                 : "io.mockk:mockk:$ext.mockk_version",
+            junit                 : "junit:junit:$ext.junit_version",
+            dexopener             : "com.github.tmurakami:dexopener:$ext.dex_opener_version",
+            junit_ext             : "androidx.test.ext:junit:$ext.junit_ext_version",
+            test_runner           : "androidx.test:runner:$ext.test_runner_version",
+            core_testing          : "androidx.arch.core:core-testing:$ext.core_testing_version",
+            kotlin_coroutines_test: "org.jetbrains.kotlinx:kotlinx-coroutines-test:$ext.coroutines_test_version",
+    ]
 }
