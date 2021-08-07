@@ -1,5 +1,6 @@
 plugins {
     id 'com.android.library'
+    id 'kotlin-android'
 }
 
 android {
@@ -29,9 +30,16 @@ android {
 }
 
 dependencies {
+    def dataDependencies = rootProject.ext.dataDependencies
+    def dataTestDependencies = rootProject.ext.dataTestDependencies
+    def dataAndroidTestDependencies = rootProject.ext.dataAndroidTestDependencies
 
-    implementation 'com.android.support:appcompat-v7:28.0.0'
-    testImplementation 'junit:junit:4.+'
-    androidTestImplementation 'com.android.support.test:runner:1.0.2'
-    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
+    implementation dataDependencies.kotlin
+    implementation dataDependencies.retrofit_jackson
+
+    testImplementation dataTestDependencies.junit
+
+    androidTestImplementation dataAndroidTestDependencies.test_runner
+    androidTestImplementation dataAndroidTestDependencies.espresso_core
+
 }

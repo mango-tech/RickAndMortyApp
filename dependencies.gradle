@@ -1,0 +1,21 @@
+ext {
+        kotlin_version                  = '1.5.30-M1'
+        retrofit_jackson_version        = "1.9.0"
+        junit_version                   = "4.13.2"
+        test_runner_version             = "1.0.2"
+        test_espresso_version           = "3.0.2"
+
+        dataDependencies = [
+                kotlin : "org.jetbrains.kotlin:kotlin-stdlib-jdk7:${ext.kotlin_version}",
+                retrofit_jackson : "com.squareup.retrofit:converter-jackson:${ext.retrofit_jackson_version}"
+        ]
+
+        dataTestDependencies = [
+                junit: "junit:junit:$ext.junit_version"
+        ]
+
+        dataAndroidTestDependencies = [
+                test_runner: "com.android.support.test:runner:$ext.test_runner_version",
+                espresso_core: "com.android.support.test.espresso:espresso-core:$ext.test_espresso_version"
+        ]
+}
