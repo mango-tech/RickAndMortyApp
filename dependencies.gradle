@@ -1,4 +1,9 @@
 ext {
+    androidBuildToolsVersion = "30.0.3"
+    androidMinSdkVersion = 21
+    androidTargetSdkVersion = 30
+    androidCompileSdkVersion = 30
+
     kotlin_version = '1.5.30-M1'
     coroutines_version = "1.4.1"
     coroutines_test_version = "1.4.1"
