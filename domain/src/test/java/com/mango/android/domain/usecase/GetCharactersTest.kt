@@ -40,8 +40,8 @@ class GetCharactersTest : TestCase() {
     fun `test repository error`() = runBlocking {
         val repository: CharacterRepository = mockk()
         val useCase = GetCharacters(repository)
-        useCase.exec(GetCharactersParams(1)){
-            when(it){
+        useCase.exec(GetCharactersParams(1)) {
+            when (it) {
                 is OneOf.Error -> {
 
                 }
@@ -49,4 +49,5 @@ class GetCharactersTest : TestCase() {
             }
         }
     }
+
 }
