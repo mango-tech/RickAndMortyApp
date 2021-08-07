@@ -59,6 +59,7 @@ dependencies {
     implementation presenterDependencies.core_ktx
     implementation presenterDependencies.appcompat
     implementation presenterDependencies.recyclerview
+    implementation presenterDependencies.picasso
     implementation presenterDependencies.material
     implementation presenterDependencies.constraintlayout
     implementation presenterDependencies.swipefrefreshlayout

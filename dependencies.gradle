@@ -31,24 +31,25 @@ ext {
     constraintlayout_version = "2.1.0"
     swipefrefreshlayout_version = "1.1.0"
     inject_version = "1"
+    picasso_version = "2.71828"
 
     presenterDependencies = [
-            kotlin                   : "org.jetbrains.kotlin:kotlin-stdlib-jdk7:${ext.kotlin_version}",
-            core_ktx                 : "androidx.core:core-ktx:$ext.core_ktx_version",
-            hilt                     : "com.google.dagger:hilt-android:$ext.hilt_version",
-            hilt_android_compiler    : "com.google.dagger:hilt-android-compiler:$ext.hilt_version",
-            hilt_viewmodel           : "androidx.hilt:hilt-lifecycle-viewmodel:$ext.hilt_viewmodel_version",
-            hilt_compiler            : "androidx.hilt:hilt-compiler:$ext.hilt_compiler",
-            multidex                 : "androidx.multidex:multidex:$ext.multidex_version",
-            appcompat                : "androidx.appcompat:appcompat:$ext.appcompat_version",
-            recyclerview             : "androidx.recyclerview:recyclerview:$ext.recyclerview_version",
-            lifecycle_extensions     : "androidx.lifecycle:lifecycle-extensions:$ext.lifecycle_version",
-            lifecycle_livedata       : "androidx.lifecycle:lifecycle-livedata-ktx:$ext.livedata_version",
-            lifecycle_viewmodel      : "androidx.lifecycle:lifecycle-viewmodel-ktx:$ext.lifecycle_viewmodel_version",
-            material                 : "com.google.android.material:material:$ext.material_version",
-            constraintlayout         : "androidx.constraintlayout:constraintlayout:$ext.constraintlayout_version",
-            swipefrefreshlayout      : "androidx.swiperefreshlayout:swiperefreshlayout:$ext.swipefrefreshlayout_version",
-
+            kotlin               : "org.jetbrains.kotlin:kotlin-stdlib-jdk7:${ext.kotlin_version}",
+            core_ktx             : "androidx.core:core-ktx:$ext.core_ktx_version",
+            hilt                 : "com.google.dagger:hilt-android:$ext.hilt_version",
+            hilt_android_compiler: "com.google.dagger:hilt-android-compiler:$ext.hilt_version",
+            hilt_viewmodel       : "androidx.hilt:hilt-lifecycle-viewmodel:$ext.hilt_viewmodel_version",
+            hilt_compiler        : "androidx.hilt:hilt-compiler:$ext.hilt_compiler",
+            multidex             : "androidx.multidex:multidex:$ext.multidex_version",
+            appcompat            : "androidx.appcompat:appcompat:$ext.appcompat_version",
+            recyclerview         : "androidx.recyclerview:recyclerview:$ext.recyclerview_version",
+            lifecycle_extensions : "androidx.lifecycle:lifecycle-extensions:$ext.lifecycle_version",
+            lifecycle_livedata   : "androidx.lifecycle:lifecycle-livedata-ktx:$ext.livedata_version",
+            lifecycle_viewmodel  : "androidx.lifecycle:lifecycle-viewmodel-ktx:$ext.lifecycle_viewmodel_version",
+            material             : "com.google.android.material:material:$ext.material_version",
+            constraintlayout     : "androidx.constraintlayout:constraintlayout:$ext.constraintlayout_version",
+            swipefrefreshlayout  : "androidx.swiperefreshlayout:swiperefreshlayout:$ext.swipefrefreshlayout_version",
+            picasso              : "com.squareup.picasso:picasso:$ext.picasso_version",
     ]
 
     dataDependencies = [
