@@ -6,8 +6,9 @@ import com.mango.android.domain.interactor.OneOf
 import com.mango.android.domain.interactor.UseCase
 import com.mango.android.domain.repository.CharacterRepository
 import java.io.IOException
+import javax.inject.Inject
 
-class GetCharacters(private val repository: CharacterRepository) :
+class GetCharacters @Inject constructor(private val repository: CharacterRepository) :
     UseCase<CharacterQueryEntity, GetCharactersParams> {
 
     override suspend fun exec(

@@ -41,6 +41,7 @@ dependencies {
 
     implementation domainDependencies.kotlin
     implementation domainDependencies.core_ktx
+    implementation domainDependencies.inject
 
     testImplementation domainTestDependencies.junit
     testImplementation domainTestDependencies.mockk

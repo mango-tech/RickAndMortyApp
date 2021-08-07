@@ -28,6 +28,7 @@ ext {
     material_version = "1.4.0"
     constraintlayout_version = "2.1.0"
     swipefrefreshlayout_version = "1.1.0"
+    inject_version = "1"
 
     presenterDependencies = [
             kotlin               : "org.jetbrains.kotlin:kotlin-stdlib-jdk7:${ext.kotlin_version}",
@@ -52,6 +53,7 @@ ext {
             retrofit        : "com.squareup.retrofit2:retrofit:$ext.retrofit_version",
             coroutines      : "org.jetbrains.kotlinx:kotlinx-coroutines-android:$ext.coroutines_version",
             retrofit_jackson: "com.squareup.retrofit2:converter-jackson:${ext.retrofit_jackson_version}",
+            inject          : "javax.inject:javax.inject:$ext.inject_version"
     ]
 
     dataTestDependencies = [
@@ -69,6 +71,7 @@ ext {
     domainDependencies = [
             kotlin  : "org.jetbrains.kotlin:kotlin-stdlib-jdk7:${ext.kotlin_version}",
             core_ktx: "androidx.core:core-ktx:$ext.core_ktx_version",
+            inject  : "javax.inject:javax.inject:$ext.inject_version"
     ]
 
     domainTestDependencies = [

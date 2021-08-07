@@ -53,6 +53,7 @@ dependencies {
     implementation project(path: ':domain')
     implementation dataDependencies.kotlin
     implementation dataDependencies.core_ktx
+    implementation dataDependencies.inject
     implementation dataDependencies.retrofit
     implementation dataDependencies.retrofit_jackson
     implementation dataDependencies.coroutines
