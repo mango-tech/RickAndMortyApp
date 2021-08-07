@@ -1,2 +1,3 @@
 rootProject.name = "Rick & Morty App"
 include ':app'
+include ':data'
