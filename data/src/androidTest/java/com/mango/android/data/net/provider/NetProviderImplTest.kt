@@ -36,4 +36,12 @@ class NetProviderImplTest : DefaultTestCase() {
         }
 
     }
+
+    fun testGetCharacter() = runBlocking {
+        val list = provider.getCharacters(1)
+        for (index in 0..5){
+            val original = list.results[index]
+            assert(provider.getCharacter(original.id) == original)
+        }
+    }
 }

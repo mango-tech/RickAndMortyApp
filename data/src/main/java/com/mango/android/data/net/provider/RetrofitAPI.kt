@@ -1,10 +1,12 @@
 package com.mango.android.data.net.provider
 
 import com.mango.android.data.net.model.CharacterResponse
+import com.mango.android.data.net.model.CharacterResult
 import retrofit2.Call
 import retrofit2.Retrofit
 import retrofit2.converter.jackson.JacksonConverterFactory
 import retrofit2.http.GET
+import retrofit2.http.Path
 import retrofit2.http.Query
 
 interface RetrofitAPI {
@@ -20,4 +22,7 @@ interface RetrofitAPI {
 
     @GET("character")
     suspend fun getCharacters(@Query("page") page: Int = 1): CharacterResponse
+
+    @GET("character/{id}")
+    suspend fun getCharacter(@Path("id") id: Int): CharacterResult
 }
