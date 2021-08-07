@@ -18,7 +18,7 @@ android {
         versionCode 1
         versionName "1.0"
 
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
 
         multiDexEnabled true
 
@@ -47,6 +47,8 @@ dependencies {
     implementation project(path: ':domain')
     implementation presenterDependencies.kotlin
     implementation presenterDependencies.core_ktx
+    implementation presenterDependencies.appcompat
+    implementation presenterDependencies.recyclerview
     implementation presenterDependencies.multidex
     implementation presenterDependencies.hilt
     implementation presenterDependencies.hilt_viewmodel
