@@ -34,6 +34,15 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
+
+    viewBinding {
+        enabled = true
+    }
+
+    dataBinding {
+        enabled true
+    }
+
 }
 
 kapt {
@@ -41,6 +50,7 @@ kapt {
 }
 
 dependencies {
+
     def presenterDependencies = rootProject.ext.presenterDependencies
 
     implementation project(path: ':data')
@@ -49,6 +59,11 @@ dependencies {
     implementation presenterDependencies.core_ktx
     implementation presenterDependencies.appcompat
     implementation presenterDependencies.recyclerview
+    implementation presenterDependencies.material
+    implementation presenterDependencies.constraintlayout
+    implementation presenterDependencies.swipefrefreshlayout
+    implementation presenterDependencies.lifecycle_extensions
+    implementation presenterDependencies.lyfecycle_viewmodel
     implementation presenterDependencies.multidex
     implementation presenterDependencies.hilt
     implementation presenterDependencies.hilt_viewmodel

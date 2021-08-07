@@ -23,6 +23,11 @@ ext {
     multidex_version = "2.0.1"
     appcompat_version = "1.3.1"
     recyclerview_version = "1.2.1"
+    ext_lifecycle_extensions_version = "1.1.1"
+    ext_lifecycle_viewmodel_version = "1.1.1"
+    material_version = "1.4.0"
+    constraintlayout_version = "2.1.0"
+    swipefrefreshlayout_version = "1.1.0"
 
     presenterDependencies = [
             kotlin               : "org.jetbrains.kotlin:kotlin-stdlib-jdk7:${ext.kotlin_version}",
@@ -34,6 +39,11 @@ ext {
             multidex             : "androidx.multidex:multidex:$ext.multidex_version",
             appcompat            : "androidx.appcompat:appcompat:$ext.appcompat_version",
             recyclerview         : "androidx.recyclerview:recyclerview:$ext.recyclerview_version",
+            lifecycle_extensions : "android.arch.lifecycle:extensions:$ext_lifecycle_extensions_version",
+            lyfecycle_viewmodel  : "android.arch.lifecycle:viewmodel:$ext_lifecycle_viewmodel_version",
+            material             : "com.google.android.material:material:$ext.material_version",
+            constraintlayout     : "androidx.constraintlayout:constraintlayout:$ext.constraintlayout_version",
+            swipefrefreshlayout  : "androidx.swiperefreshlayout:swiperefreshlayout:$ext.swipefrefreshlayout_version",
     ]
 
     dataDependencies = [
