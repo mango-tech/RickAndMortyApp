@@ -43,10 +43,12 @@ android {
 }
 
 dependencies {
+
     def dataDependencies = rootProject.ext.dataDependencies
     def dataTestDependencies = rootProject.ext.dataTestDependencies
     def dataAndroidTestDependencies = rootProject.ext.dataAndroidTestDependencies
 
+    implementation project(path: ':domain')
     implementation dataDependencies.kotlin
     implementation dataDependencies.core_ktx
     implementation dataDependencies.retrofit
