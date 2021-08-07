@@ -13,7 +13,7 @@ android {
         versionCode 1
         versionName "1.0"
 
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles "consumer-rules.pro"
     }
 
@@ -27,6 +27,19 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
+
+    packagingOptions {
+        exclude("META-INF/*.kotlin_module")
+        exclude 'META-INF/AL2.0'
+        exclude 'META-INF/LGPL2.1'
+        exclude 'META-INF/DEPENDENCIES'
+        exclude 'META-INF/LICENSE'
+        exclude 'META-INF/LICENSE.txt'
+        exclude 'META-INF/license.txt'
+        exclude 'META-INF/NOTICE'
+        exclude 'META-INF/NOTICE.txt'
+        exclude 'META-INF/notice.txt'
+    }
 }
 
 dependencies {
@@ -35,11 +48,16 @@ dependencies {
     def dataAndroidTestDependencies = rootProject.ext.dataAndroidTestDependencies
 
     implementation dataDependencies.kotlin
+    implementation dataDependencies.core_ktx
+    implementation dataDependencies.retrofit
     implementation dataDependencies.retrofit_jackson
+    implementation dataDependencies.coroutines
 
     testImplementation dataTestDependencies.junit
 
-    androidTestImplementation dataAndroidTestDependencies.test_runner
+    androidTestImplementation dataAndroidTestDependencies.core_testing
     androidTestImplementation dataAndroidTestDependencies.espresso_core
+    androidTestImplementation dataAndroidTestDependencies.kotlin_coroutines_test
+    androidTestImplementation dataAndroidTestDependencies.junit_ext
 
 }
