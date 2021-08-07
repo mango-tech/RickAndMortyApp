@@ -62,8 +62,9 @@ dependencies {
     implementation presenterDependencies.material
     implementation presenterDependencies.constraintlayout
     implementation presenterDependencies.swipefrefreshlayout
+    implementation presenterDependencies.lifecycle_livedata
     implementation presenterDependencies.lifecycle_extensions
-    implementation presenterDependencies.lyfecycle_viewmodel
+    implementation presenterDependencies.lifecycle_viewmodel
     implementation presenterDependencies.multidex
     implementation presenterDependencies.hilt
     implementation presenterDependencies.hilt_viewmodel
