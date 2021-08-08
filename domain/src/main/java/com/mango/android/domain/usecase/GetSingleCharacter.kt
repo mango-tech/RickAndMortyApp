@@ -5,8 +5,9 @@ import com.mango.android.domain.interactor.Failure
 import com.mango.android.domain.interactor.OneOf
 import com.mango.android.domain.interactor.UseCase
 import com.mango.android.domain.repository.CharacterRepository
+import javax.inject.Inject
 
-class GetSingleCharacter(private val repository: CharacterRepository) :
+class GetSingleCharacter @Inject constructor(private val repository: CharacterRepository) :
     UseCase<CharacterEntity, GetSingleCharacterParams> {
     override suspend fun exec(
         params: GetSingleCharacterParams,

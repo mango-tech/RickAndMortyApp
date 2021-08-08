@@ -2,6 +2,7 @@ package com.mango.android.rickmortyapp.di
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import com.mango.android.rickmortyapp.ui.detail.DetailViewModel
 import com.mango.android.rickmortyapp.ui.list.ListViewModel
 import dagger.Binds
 import dagger.Module
@@ -21,5 +22,8 @@ abstract class ViewModelModule {
     @ViewModelKey(ListViewModel::class)
     internal abstract fun postListViewModel(viewModel: ListViewModel): ViewModel
 
-
+    @Binds
+    @IntoMap
+    @ViewModelKey(DetailViewModel::class)
+    internal abstract fun postDetailViewModel(viewModel: DetailViewModel): ViewModel
 }
