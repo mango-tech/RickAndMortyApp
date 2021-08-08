@@ -2,6 +2,7 @@ package com.mango.android.rickmortyapp.ui.detail
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.MenuItem
 import android.view.View
 import androidx.lifecycle.ViewModelProviders
 import com.mango.android.domain.entity.CharacterEntity
@@ -31,9 +32,13 @@ class DetailActivity : AppCompatActivity() {
         binding = ActivityDetailBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+
         processExtras()
         bindViewModel()
 
+        binding.viewModel = viewModel
+        binding.lifecycleOwner = this
         viewModel.loadCharacter(currentCharacter)
     }
 
@@ -41,6 +46,12 @@ class DetailActivity : AppCompatActivity() {
         intent.extras?.let { bundle ->
             currentCharacter = bundle.getInt(NavigatorController.DETAIL_EXTRA_CHAR_ID)
         }
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if (item.itemId == android.R.id.home)
+            finish()
+        return super.onOptionsItemSelected(item)
     }
 
     private fun bindViewModel() {
@@ -70,5 +81,7 @@ class DetailActivity : AppCompatActivity() {
     private fun populateCharacter(entity: CharacterEntity) {
         Picasso.get().load(entity.image).error(R.drawable.ic_no_image_24)
             .into(binding.imageViewAvatar)
+
+        title = entity.name
     }
 }
