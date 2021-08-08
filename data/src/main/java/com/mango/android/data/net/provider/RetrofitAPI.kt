@@ -2,7 +2,6 @@ package com.mango.android.data.net.provider
 
 import com.mango.android.data.net.model.CharacterResponse
 import com.mango.android.data.net.model.CharacterResult
-import retrofit2.Call
 import retrofit2.Retrofit
 import retrofit2.converter.jackson.JacksonConverterFactory
 import retrofit2.http.GET

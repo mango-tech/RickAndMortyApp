@@ -2,9 +2,7 @@ package com.mango.android.rickmortyapp.ui.alertError
 
 import android.app.Activity
 import android.app.AlertDialog
-import android.content.DialogInterface
 import com.mango.android.rickmortyapp.R
-import kotlinx.coroutines.NonCancellable.cancel
 
 class AlertErrorDialog(private val activity: Activity) {
 

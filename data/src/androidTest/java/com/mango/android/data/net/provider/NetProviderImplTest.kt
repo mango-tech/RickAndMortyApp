@@ -1,7 +1,6 @@
 package com.mango.android.data.net.provider
 
 import com.mango.android.data.DefaultTestCase
-import junit.framework.TestCase
 import kotlinx.coroutines.runBlocking
 import org.junit.Before
 import org.junit.Test

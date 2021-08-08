@@ -31,8 +31,6 @@ class NavigatorController @Inject constructor() {
 
     companion object {
         const val DETAIL_EXTRA_CHAR_ID = "detailActivity:charId"
-
-        const val DETAIL_REQUEST_CODE = 0xFF
     }
 
 }

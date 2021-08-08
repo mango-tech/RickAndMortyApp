@@ -23,7 +23,6 @@ class ListViewModel @Inject constructor(private val getCharacters: GetCharacters
 
     val characters: LiveData<MutableList<CharacterEntity>> get() = mCharacters
     val state: LiveData<State> get() = mState
-    val currentPage: LiveData<Int> get() = mCurrentPage
 
     fun loadNextPage() {
         mState.postValue(State.Loading)
