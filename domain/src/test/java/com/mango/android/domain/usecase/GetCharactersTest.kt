@@ -1,6 +1,7 @@
 package com.mango.android.domain.usecase
 
 import com.mango.android.domain.entity.CharacterQueryEntity
+import com.mango.android.domain.interactor.Failure
 import com.mango.android.domain.interactor.OneOf
 import com.mango.android.domain.repository.CharacterRepository
 import io.mockk.coEvery
@@ -20,7 +21,7 @@ class GetCharactersTest : TestCase() {
     fun `test if repository returns value to use case`() = runBlocking {
         val defaultQuery = CharacterQueryEntity(0, 1, mutableListOf())
         val repository: CharacterRepository = mockk()
-        coEvery { repository.getCharacters() } returns defaultQuery
+        coEvery { repository.getCharacters() } returns OneOf.Success(defaultQuery)
 
         repository.getCharacters(1)
 
@@ -39,6 +40,7 @@ class GetCharactersTest : TestCase() {
 
     fun `test repository error`() = runBlocking {
         val repository: CharacterRepository = mockk()
+        coEvery { repository.getCharacters() } returns OneOf.Error(Failure.NetworkFailure)
         val useCase = GetCharacters(repository)
         useCase.exec(GetCharactersParams(1)) {
             when (it) {

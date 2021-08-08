@@ -14,8 +14,14 @@ class GetSingleCharacterTest : TestCase() {
     fun `test list character should be the same as single character query`() = runBlocking {
         val character = CharacterEntity(1, "Rick", "Single", "Human?", "N/A", "M", "")
         val repository: CharacterRepository = mockk()
-        coEvery { repository.getCharacters() } returns CharacterQueryEntity(0, 1, listOf(character))
-        coEvery { repository.getCharacter(character.id) } returns character
+        coEvery { repository.getCharacters() } returns OneOf.Success(
+            CharacterQueryEntity(
+                0,
+                1,
+                listOf(character)
+            )
+        )
+        coEvery { repository.getCharacter(character.id) } returns OneOf.Success(character)
         val useCase = GetSingleCharacter(repository)
 
         withTimeout(10000L) {

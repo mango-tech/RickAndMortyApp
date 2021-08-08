@@ -2,6 +2,7 @@ package com.mango.android.rickmortyapp.ui.list
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
 import com.mango.android.domain.entity.CharacterEntity
 import com.mango.android.rickmortyapp.R
@@ -12,7 +13,7 @@ class CharacterAdapter : RecyclerView.Adapter<CharacterAdapter.ViewHolder>() {
 
     private var list = mutableListOf<CharacterEntity>()
     var onDisplayLastItem: (() -> Unit)? = null
-    var onItemClick: ((CharacterEntity) -> Unit)? = null
+    var onItemClick: ((CharacterEntity, ImageView) -> Unit)? = null
 
     class ViewHolder(private val binding: ItemCharacterBinding) :
         RecyclerView.ViewHolder(binding.root) {
@@ -37,7 +38,7 @@ class CharacterAdapter : RecyclerView.Adapter<CharacterAdapter.ViewHolder>() {
             ).also {
                 it.root.setOnClickListener { view ->
                     if (view.tag is CharacterEntity)
-                        onItemClick?.invoke(view.tag as CharacterEntity)
+                        onItemClick?.invoke(view.tag as CharacterEntity, it.imageViewAvatar)
                 }
             })
     }
