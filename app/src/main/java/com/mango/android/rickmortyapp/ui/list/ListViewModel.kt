@@ -74,6 +74,7 @@ class ListViewModel @Inject constructor(private val getCharacters: GetCharacters
             Failure.NetworkFailure -> mState.postValue(State.ErrorLoading)
             Failure.UnknownFailure, Failure.OutOfBoundsFailure -> mState.postValue(State.LoadedEndOfData)
         }
+        mCharacters.postValue(mCharacters.value)
     }
 
     enum class State {

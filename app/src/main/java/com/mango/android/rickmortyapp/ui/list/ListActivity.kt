@@ -61,24 +61,25 @@ class ListActivity : AppCompatActivity() {
         viewModel =
             ViewModelProviders.of(this, viewModelFactory)[ListViewModel::class.java]
 
-        viewModel.state.observe(this, { state ->
+        viewModel.state.observe(this) { state ->
             when (state) {
-                ListViewModel.State.ErrorLoading ->
+                ListViewModel.State.ErrorLoading -> {
                     navigator.openError(this) {
-                        viewModel.reset()
+                        binding.swipeRefresh.isRefreshing = false
                     }
-
-                ListViewModel.State.Loaded, ListViewModel.State.LoadedEndOfData ->
+                }
+                ListViewModel.State.Loaded, ListViewModel.State.LoadedEndOfData -> {
                     binding.swipeRefresh.isRefreshing = false
-
-                ListViewModel.State.Loading ->
+                }
+                ListViewModel.State.Loading -> {
                     binding.swipeRefresh.isRefreshing = true
-
+                    binding.textViewEmptyList.visibility = View.GONE
+                }
                 ListViewModel.State.NotInit, null ->
                     viewModel.loadNextPage()
 
             }
-        })
+        }
     }
 
     companion object {
