@@ -5,7 +5,6 @@ import com.mango.android.domain.interactor.Failure
 import com.mango.android.domain.interactor.OneOf
 import com.mango.android.domain.interactor.UseCase
 import com.mango.android.domain.repository.CharacterRepository
-import java.io.IOException
 
 class GetSingleCharacter(private val repository: CharacterRepository) :
     UseCase<CharacterEntity, GetSingleCharacterParams> {
@@ -13,15 +12,7 @@ class GetSingleCharacter(private val repository: CharacterRepository) :
         params: GetSingleCharacterParams,
         onResult: (OneOf<Failure, CharacterEntity>) -> Unit
     ) {
-        try {
-            val data = repository.getCharacter(params.id)
-            onResult(OneOf.Success(data))
-        } catch (e: IOException) {
-            onResult(OneOf.Error(Failure.NetworkFailure))
-        } catch (e: Exception) {
-            // Type should come from repository
-            onResult(OneOf.Error(Failure.UnknownFailure))
-        }
+        onResult(repository.getCharacter(params.id))
     }
 }
 
