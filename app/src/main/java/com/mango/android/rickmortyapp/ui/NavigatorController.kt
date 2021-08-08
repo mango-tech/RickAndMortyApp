@@ -1,39 +1,28 @@
 package com.mango.android.rickmortyapp.ui
 
-import android.app.Activity
-import android.app.ActivityOptions
-import android.content.Context
 import android.content.Intent
 import android.view.View
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityOptionsCompat
+import androidx.core.util.Pair
 import com.mango.android.rickmortyapp.ui.alertError.AlertErrorDialog
 import com.mango.android.rickmortyapp.ui.detail.DetailActivity
-import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
-import androidx.core.util.Pair
-import java.util.*
-import kotlin.collections.ArrayList
 
-class NavigatorController @Inject constructor(@ApplicationContext private val context: Context) {
+class NavigatorController @Inject constructor() {
 
     fun openDetail(
         activity: AppCompatActivity,
         viewRelation: Pair<View, String>,
-        characterId: Int,
-        onResult: () -> Unit
+        characterId: Int
     ) {
-        val resultLauncher =
-            activity.registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
-                onResult.invoke()
-            }
+        val intent = Intent(activity, DetailActivity::class.java)
+        intent.putExtra(DETAIL_EXTRA_CHAR_ID, characterId)
 
         val options =
             ActivityOptionsCompat.makeSceneTransitionAnimation(activity, viewRelation)
-        val intent = Intent(activity, DetailActivity::class.java)
-        intent.putExtra(DETAIL_EXTRA_CHAR_ID, characterId)
-        resultLauncher.launch(intent, options)
+
+        activity.startActivity(intent, options.toBundle())
     }
 
     fun openError(activity: AppCompatActivity, onResult: () -> Unit) {

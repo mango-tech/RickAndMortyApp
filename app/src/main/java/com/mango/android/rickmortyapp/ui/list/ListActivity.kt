@@ -1,9 +1,10 @@
 package com.mango.android.rickmortyapp.ui.list
 
 import android.os.Bundle
+import android.view.View
+import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.BindingAdapter
-import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -43,17 +44,17 @@ class ListActivity : AppCompatActivity() {
         binding.swipeRefresh.setOnRefreshListener { viewModel.reset() }
 
         adapter = CharacterAdapter()
-        adapter.onDisplayLastItem = { viewModel.loadNextPage() }
-        adapter.onItemClick = { displayDetail(it.id) }
+        adapter.onDisplayLastItem = { viewModel.onLastItemShowed() }
+        adapter.onItemClick =
+            { entity: CharacterEntity, imageView: ImageView -> displayDetail(entity.id, imageView) }
 
         binding.recyclerViewItems.layoutManager = LinearLayoutManager(this)
         binding.recyclerViewItems.adapter = adapter
     }
 
-    private fun displayDetail(id: Int) {
-        navigator.openDetail(this, id) {
-            // Nothing, should refresh?
-        }
+    private fun displayDetail(id: Int, imageView: ImageView) {
+        val pair = androidx.core.util.Pair<View, String>(imageView, "avatar")
+        navigator.openDetail(this, pair, id)
     }
 
     private fun bindViewModel() {

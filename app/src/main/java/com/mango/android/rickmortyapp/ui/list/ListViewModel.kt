@@ -42,6 +42,10 @@ class ListViewModel @Inject constructor(private val getCharacters: GetCharacters
         }
     }
 
+    fun onLastItemShowed(){
+        loadNextPage()
+    }
+
     fun reset() {
         mCurrentPage.postValue(0)
         mCharacters.value?.clear()
