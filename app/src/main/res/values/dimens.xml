@@ -5,4 +5,7 @@
     <dimen name="item_text_padding_left">15dp</dimen>
     <dimen name="detail_margin_top">24dp</dimen>
     <dimen name="detail_small_margin_top">12dp</dimen>
+    <dimen name="avatar_big_size">128dp</dimen>
+    <dimen name="avatar_bigger_size">256dp</dimen>
+    <dimen name="avatar_big_margin">64dp</dimen>
 </resources>
