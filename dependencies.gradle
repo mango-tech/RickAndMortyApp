@@ -4,7 +4,7 @@ ext {
     androidTargetSdkVersion = 30
     androidCompileSdkVersion = 30
 
-    kotlin_version = '1.5.30-M1'
+    kotlin_version = '1.5.21'
     coroutines_version = "1.4.1"
     coroutines_test_version = "1.4.1"
     retrofit_version = "2.9.0"
