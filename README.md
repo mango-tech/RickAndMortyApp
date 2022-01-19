@@ -10,16 +10,20 @@ In this repository you'll find a classic list/detail application. Code is messy,
 Below you can see the technical stack we use at Mango. It would be nice if you're familiar with it, but we'll also glad if you show us something different or trendy. New tools are always welcome :smile:
 
 - Kotlin
+- Kotlin DSL
 - MVVM + Databinding (We're experimenting with MVI)
 - Architecture components
 - Retrofit
-- Dagger (We're up to date with Hilt! :rocket: )
 - Coroutines (Although RxJava remains in some parts...)
 - MockK
 - Picasso
 - Jackson
 - Timber
+- Local store (realm, shared preferences)
 - ConstraintLayout
+- Custom styles
+- Compose (Roadmap :rocket:)
+- Deeplinks
 - App modularization is in our roadmap. If you have experience in this area, you can show us what you know, up to you.
 
 If you're not comfortable using that tools, no worries! Code as you fancy. The purpose is just having a space for discussing technical stuff together. For further doubts, please contact us at eqp.ecommerce.movilidad@mango.com
