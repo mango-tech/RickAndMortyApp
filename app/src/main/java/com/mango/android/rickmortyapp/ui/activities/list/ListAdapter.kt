@@ -9,7 +9,7 @@ import com.mango.android.rickmortyapp.R
 import es.andres.bailen.domain.models.CharacterModel
 import java.util.ArrayList
 
-class CharacterAdapter(private val mListener: ListActivity.OnCharacterClickListener) :
+class CharacterAdapter(private val mListener: OnCharacterClickListener) :
     RecyclerView.Adapter<CharacterAdapter.CharacterViewHolder>() {
     private var mCharacterList: List<CharacterModel?> = ArrayList(0)
 
@@ -44,4 +44,12 @@ class CharacterAdapter(private val mListener: ListActivity.OnCharacterClickListe
     override fun getItemCount(): Int {
         return mCharacterList.size
     }
+
+    // --------------------------------------------------------------------------------------------
+    // RecyclerView adapter
+    // --------------------------------------------------------------------------------------------
+    interface OnCharacterClickListener {
+        fun onCharacterClicked(character: CharacterModel?)
+    }
+
 }

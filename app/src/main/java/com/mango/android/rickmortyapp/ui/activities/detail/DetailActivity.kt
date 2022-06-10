@@ -1,25 +1,19 @@
 package com.mango.android.rickmortyapp.ui.activities.detail
 
 import android.content.Context
-import androidx.appcompat.app.AppCompatActivity
-import android.os.Bundle
-import android.os.AsyncTask
-import org.json.JSONObject
 import android.content.Intent
-import com.mango.android.rickmortyapp.ui.dialogs.ServerErrorDialogFragment
+import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
 import com.mango.android.rickmortyapp.databinding.ActivityDetailBinding
-import es.andres.bailen.domain.models.CharacterModel
-import org.json.JSONException
-import java.io.IOException
-import java.net.HttpURLConnection
-import java.net.MalformedURLException
-import java.net.URL
-import java.util.*
+import com.mango.android.rickmortyapp.ui.dialogs.ServerErrorDialogFragment
+import com.mango.android.rickmortyapp.ui.viewmodel.details.DetailViewModel
+import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.util.concurrent.ExecutionException
 
 class DetailActivity : AppCompatActivity() {
     private lateinit var binding: ActivityDetailBinding
     private var mCharacterId = 0
+    private val viewModel: DetailViewModel by viewModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,9 +25,7 @@ class DetailActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
         try {
-            val character = GetCharacterDetailTask().execute(
-                mCharacterId
-            ).get()
+            val character = viewModel.getCharacter(mCharacterId.toString())
             character?.let {
                 binding.character = it
             }
@@ -50,69 +42,6 @@ class DetailActivity : AppCompatActivity() {
         }
     }
 
-    inner class GetCharacterDetailTask : AsyncTask<Int?, Void?, CharacterModel?>() {
-         override fun doInBackground(vararg integers: Int?): CharacterModel? {
-            var url: URL? = null
-            try {
-                url = URL("https://rickandmortyapi.com/api/character/" + integers[0])
-            } catch (e: MalformedURLException) {
-                e.printStackTrace()
-            }
-            var urlConnection: HttpURLConnection? = null
-            try {
-                urlConnection = url?.openConnection() as HttpURLConnection?
-                return try {
-                    val inputStream = urlConnection?.inputStream
-                    val scanner = Scanner(inputStream)
-                    scanner.useDelimiter("\\A")
-                    val hasInput = scanner.hasNext()
-                    if (hasInput) {
-                        val json = scanner.next()
-                        parseCharacterJson(json)
-                    } else {
-                        null
-                    }
-                } finally {
-                    urlConnection?.disconnect()
-                }
-            } catch (e: IOException) {
-                e.printStackTrace()
-            }
-            return null
-        }
-
-        private fun parseCharacterJson(string: String): CharacterModel? {
-            return try {
-                val jsonObject = JSONObject(string)
-                val c = CharacterModel()
-                if (jsonObject.has("id")) {
-                    c.id = jsonObject.optInt("id")
-                }
-                if (jsonObject.has("name")) {
-                    c.name = jsonObject.optString("name")
-                }
-                if (jsonObject.has("status")) {
-                    c.status = jsonObject.optString("status")
-                }
-                if (jsonObject.has("species")) {
-                    c.species = jsonObject.optString("species")
-                }
-                if (jsonObject.has("type")) {
-                    c.type = jsonObject.optString("type")
-                }
-                if (jsonObject.has("gender")) {
-                    c.gender = jsonObject.optString("gender")
-                }
-                if (jsonObject.has("image")) {
-                    c.image = jsonObject.optString("image")
-                }
-                c
-            } catch (e: JSONException) {
-                e.printStackTrace()
-                null
-            }
-        }
-    }
 
     companion object {
         const val EXTRA_CHARACTER_ID = "EXTRA_CHARACTER_ID"
