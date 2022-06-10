@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout>
     <data>
-        <variable name="character" type="com.mango.android.rickmortyapp.Character"/>
+        <variable name="character" type="es.andres.bailen.domain.models.CharacterModel"/>
     </data>
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"

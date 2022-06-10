@@ -1,18 +1,13 @@
-package com.mango.android.rickmortyapp
+package com.mango.android.rickmortyapp.ui.activities.list
 
 import android.os.AsyncTask
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import androidx.recyclerview.widget.RecyclerView.ViewHolder
-import com.mango.android.rickmortyapp.DetailActivity.Companion.start
-import com.mango.android.rickmortyapp.ListActivity.CharacterAdapter.CharacterViewHolder
 import com.mango.android.rickmortyapp.databinding.ActivityListBinding
+import com.mango.android.rickmortyapp.ui.activities.detail.DetailActivity.Companion.start
+import com.mango.android.rickmortyapp.ui.dialogs.ServerErrorDialogFragment
+import es.andres.bailen.domain.models.CharacterModel
 import org.json.JSONArray
 import org.json.JSONException
 import org.json.JSONObject
@@ -25,11 +20,13 @@ import java.util.concurrent.ExecutionException
 
 class ListActivity : AppCompatActivity() {
     private lateinit var binding: ActivityListBinding
-    private var mCharacterAdapter: CharacterAdapter = CharacterAdapter(object : OnCharacterClickListener {
-        override fun onCharacterClicked(character: Character?) {
-            start(this@ListActivity, character!!.id)
-        }
-    })
+    private var mCharacterAdapter: CharacterAdapter =
+        CharacterAdapter(object : OnCharacterClickListener {
+            override fun onCharacterClicked(character: CharacterModel?) {
+                start(this@ListActivity, character!!.id)
+            }
+        })
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityListBinding.inflate(layoutInflater)
@@ -43,7 +40,7 @@ class ListActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
         try {
-            val characters: List<Character?>? = GetCharactersTask().execute().get()
+            val characters: List<CharacterModel?>? = GetCharactersTask().execute().get()
             mCharacterAdapter.bindData(characters)
         } catch (e: ExecutionException) {
             e.printStackTrace()
@@ -64,48 +61,12 @@ class ListActivity : AppCompatActivity() {
     // RecyclerView adapter
     // --------------------------------------------------------------------------------------------
     interface OnCharacterClickListener {
-        fun onCharacterClicked(character: Character?)
+        fun onCharacterClicked(character: CharacterModel?)
     }
 
-    class CharacterAdapter(private val mListener: OnCharacterClickListener) :
-        RecyclerView.Adapter<CharacterViewHolder>() {
-        private var mCharacterList: List<Character?> = ArrayList(0)
 
-        inner class CharacterViewHolder(view: View) : ViewHolder(view) {
-            var mName: TextView
-
-            init {
-                mName = view.findViewById(R.id.tv_name)
-            }
-        }
-
-        fun bindData(characters: List<Character?>?) {
-            mCharacterList = ArrayList(characters)
-            notifyDataSetChanged()
-        }
-
-        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CharacterViewHolder {
-            val itemView = LayoutInflater.from(parent.context)
-                .inflate(R.layout.item_character, parent, false)
-            return CharacterViewHolder(itemView)
-        }
-
-        override fun onBindViewHolder(holder: CharacterViewHolder, position: Int) {
-            holder.mName.text = mCharacterList.get(position)!!.name
-            holder.itemView.setOnClickListener {
-                mListener.onCharacterClicked(
-                    mCharacterList[position]
-                )
-            }
-        }
-
-        override fun getItemCount(): Int {
-            return mCharacterList.size
-        }
-    }
-
-    inner class GetCharactersTask() : AsyncTask<Void?, Void?, List<Character>?>() {
-         override fun doInBackground(vararg voids: Void?): List<Character>? {
+    inner class GetCharactersTask() : AsyncTask<Void?, Void?, List<CharacterModel>?>() {
+        override fun doInBackground(vararg voids: Void?): List<CharacterModel>? {
             var url: URL? = null
             try {
                 url = URL("https://rickandmortyapi.com/api/character/")
@@ -123,7 +84,7 @@ class ListActivity : AppCompatActivity() {
                     if (hasInput) {
                         val json = scanner.next()
                         try {
-                            val list: MutableList<Character> = ArrayList()
+                            val list: MutableList<CharacterModel> = ArrayList()
                             val `object` = JSONObject(json)
                             if (`object`.has("results")) {
                                 val results = `object`.optString("results")
@@ -151,10 +112,10 @@ class ListActivity : AppCompatActivity() {
             return null
         }
 
-        private fun parseCharacterJson(string: String): Character? {
+        private fun parseCharacterJson(string: String): CharacterModel? {
             try {
                 val `object` = JSONObject(string)
-                val c = Character()
+                val c = CharacterModel()
                 if (`object`.has("id")) {
                     c.id = `object`.optInt("id")
                 }

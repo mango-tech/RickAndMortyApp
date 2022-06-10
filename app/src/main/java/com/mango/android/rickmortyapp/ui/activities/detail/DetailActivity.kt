@@ -1,13 +1,14 @@
-package com.mango.android.rickmortyapp
+package com.mango.android.rickmortyapp.ui.activities.detail
 
 import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
-import android.widget.TextView
 import android.os.Bundle
 import android.os.AsyncTask
 import org.json.JSONObject
 import android.content.Intent
+import com.mango.android.rickmortyapp.ui.dialogs.ServerErrorDialogFragment
 import com.mango.android.rickmortyapp.databinding.ActivityDetailBinding
+import es.andres.bailen.domain.models.CharacterModel
 import org.json.JSONException
 import java.io.IOException
 import java.net.HttpURLConnection
@@ -49,8 +50,8 @@ class DetailActivity : AppCompatActivity() {
         }
     }
 
-    inner class GetCharacterDetailTask : AsyncTask<Int?, Void?, Character?>() {
-         override fun doInBackground(vararg integers: Int?): Character? {
+    inner class GetCharacterDetailTask : AsyncTask<Int?, Void?, CharacterModel?>() {
+         override fun doInBackground(vararg integers: Int?): CharacterModel? {
             var url: URL? = null
             try {
                 url = URL("https://rickandmortyapi.com/api/character/" + integers[0])
@@ -80,10 +81,10 @@ class DetailActivity : AppCompatActivity() {
             return null
         }
 
-        private fun parseCharacterJson(string: String): Character? {
+        private fun parseCharacterJson(string: String): CharacterModel? {
             return try {
                 val jsonObject = JSONObject(string)
-                val c = Character()
+                val c = CharacterModel()
                 if (jsonObject.has("id")) {
                     c.id = jsonObject.optInt("id")
                 }

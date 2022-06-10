@@ -1,6 +1,6 @@
-package com.mango.android.rickmortyapp
+package es.andres.bailen.domain.models
 
-data class Character(
+data class CharacterModel(
     var id: Int = 0,
     var name: String? = null,
     var status: String? = null,

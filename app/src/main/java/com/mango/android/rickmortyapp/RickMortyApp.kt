@@ -12,7 +12,6 @@ import org.koin.core.logger.Level
 class RickMortyApp : Application() {
     override fun onCreate() {
         super.onCreate()
-
         startKoin {
             androidLogger(Level.ERROR)
             androidContext(applicationContext)

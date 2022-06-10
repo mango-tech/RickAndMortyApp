@@ -1,12 +1,10 @@
-package com.mango.android.rickmortyapp
+package com.mango.android.rickmortyapp.ui.dialogs
 
 import android.app.AlertDialog
 import android.app.Dialog
 import android.os.Bundle
 import com.mango.android.rickmortyapp.R
-import android.content.DialogInterface
 import androidx.fragment.app.DialogFragment
-import com.mango.android.rickmortyapp.ServerErrorDialogFragment
 
 class ServerErrorDialogFragment : DialogFragment() {
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {

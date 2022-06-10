@@ -5,7 +5,7 @@
 
         <variable
             name="character"
-            type="com.mango.android.rickmortyapp.Character" />
+            type="es.andres.bailen.domain.models.CharacterModel" />
     </data>
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
