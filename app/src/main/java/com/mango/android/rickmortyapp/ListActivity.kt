@@ -1,220 +1,185 @@
-package com.mango.android.rickmortyapp;
+package com.mango.android.rickmortyapp
 
-import android.os.AsyncTask;
-import android.os.Bundle;
-import android.support.v4.app.FragmentManager;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.TextView;
+import android.os.AsyncTask
+import android.os.Bundle
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.RecyclerView.ViewHolder
+import com.mango.android.rickmortyapp.DetailActivity.Companion.start
+import com.mango.android.rickmortyapp.ListActivity.CharacterAdapter.CharacterViewHolder
+import org.json.JSONArray
+import org.json.JSONException
+import org.json.JSONObject
+import java.io.IOException
+import java.net.HttpURLConnection
+import java.net.MalformedURLException
+import java.net.URL
+import java.util.*
+import java.util.concurrent.ExecutionException
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Scanner;
-import java.util.concurrent.ExecutionException;
-
-
-public class ListActivity extends AppCompatActivity {
-
-    private RecyclerView mRecyclerView;
-    private CharacterAdapter mCharacterAdapter;
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.list);
+class ListActivity : AppCompatActivity() {
+    private var mRecyclerView: RecyclerView? = null
+    private var mCharacterAdapter: CharacterAdapter? = null
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.list)
 
         // init recycler view
-        mRecyclerView = findViewById(R.id.recycler);
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-
-        mCharacterAdapter = new CharacterAdapter(new OnCharacterClickListener() {
-            @Override
-            public void onCharacterClicked(Character character) {
-                DetailActivity.start(ListActivity.this, character.id);
+        mRecyclerView = findViewById(R.id.recycler)
+        mRecyclerView?.setLayoutManager(LinearLayoutManager(this))
+        mCharacterAdapter = CharacterAdapter(object : OnCharacterClickListener {
+            override fun onCharacterClicked(character: Character?) {
+                start(this@ListActivity, character!!.id)
             }
-        });
-
-        mRecyclerView.setAdapter(mCharacterAdapter);
+        })
+        mRecyclerView?.setAdapter(mCharacterAdapter)
     }
 
-
-    @Override
-    protected void onResume() {
-        super.onResume();
+    override fun onResume() {
+        super.onResume()
         try {
-            List<Character> characters = new GetCharactersTask().execute().get();
-            mCharacterAdapter.bindData(characters);
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-            FragmentManager fragmentManager = getSupportFragmentManager();
+            val characters: List<Character?>? = GetCharactersTask().execute().get()
+            mCharacterAdapter!!.bindData(characters)
+        } catch (e: ExecutionException) {
+            e.printStackTrace()
+            val fragmentManager = supportFragmentManager
             fragmentManager.beginTransaction()
-                    .add(ServerErrorDialogFragment.newInstance(), null)
-                    .commitAllowingStateLoss();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-            FragmentManager fragmentManager = getSupportFragmentManager();
+                .add(ServerErrorDialogFragment.newInstance(), null)
+                .commitAllowingStateLoss()
+        } catch (e: InterruptedException) {
+            e.printStackTrace()
+            val fragmentManager = supportFragmentManager
             fragmentManager.beginTransaction()
-                    .add(ServerErrorDialogFragment.newInstance(), null)
-                    .commitAllowingStateLoss();
+                .add(ServerErrorDialogFragment.newInstance(), null)
+                .commitAllowingStateLoss()
         }
     }
-
 
     // --------------------------------------------------------------------------------------------
     // RecyclerView adapter
     // --------------------------------------------------------------------------------------------
-
-
-    public interface OnCharacterClickListener {
-        void onCharacterClicked(Character character);
+    interface OnCharacterClickListener {
+        fun onCharacterClicked(character: Character?)
     }
 
-    public static class CharacterAdapter extends RecyclerView.Adapter<CharacterAdapter.CharacterViewHolder> {
+    class CharacterAdapter(private val mListener: OnCharacterClickListener) :
+        RecyclerView.Adapter<CharacterViewHolder>() {
+        private var mCharacterList: List<Character?> = ArrayList(0)
 
-        private final OnCharacterClickListener mListener;
+        inner class CharacterViewHolder(view: View) : ViewHolder(view) {
+            var mName: TextView
 
-        private List<Character> mCharacterList = new ArrayList<>(0);
-
-        public class CharacterViewHolder extends RecyclerView.ViewHolder {
-            public TextView mName;
-
-            public CharacterViewHolder(View view) {
-                super(view);
-                mName = view.findViewById(R.id.tv_name);
+            init {
+                mName = view.findViewById(R.id.tv_name)
             }
         }
 
-        public CharacterAdapter(OnCharacterClickListener onCharacterClickListener) {
-            mListener = onCharacterClickListener;
+        fun bindData(characters: List<Character?>?) {
+            mCharacterList = ArrayList(characters)
+            notifyDataSetChanged()
         }
 
-        public void bindData(List<Character> characters) {
-            mCharacterList = new ArrayList<>(characters);
-            notifyDataSetChanged();
+        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CharacterViewHolder {
+            val itemView = LayoutInflater.from(parent.context)
+                .inflate(R.layout.item, parent, false)
+            return CharacterViewHolder(itemView)
         }
 
-        @Override
-        public CharacterViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-            View itemView = LayoutInflater.from(parent.getContext())
-                    .inflate(R.layout.item, parent, false);
-
-            return new CharacterViewHolder(itemView);
+        override fun onBindViewHolder(holder: CharacterViewHolder, position: Int) {
+            holder.mName.text = mCharacterList.get(position)!!.name
+            holder.itemView.setOnClickListener(View.OnClickListener {
+                mListener.onCharacterClicked(
+                    mCharacterList[position]
+                )
+            })
         }
 
-        @Override
-        public void onBindViewHolder(CharacterViewHolder holder, final int position) {
-            holder.mName.setText(mCharacterList.get(position).name);
-
-            holder.itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    mListener.onCharacterClicked(mCharacterList.get(position));
-                }
-            });
-        }
-
-        @Override
-        public int getItemCount() {
-            return mCharacterList.size();
+        override fun getItemCount(): Int {
+            return mCharacterList.size
         }
     }
 
-    public class GetCharactersTask extends AsyncTask<Void, Void, List<Character>> {
-
-        @Override
-        protected List<Character> doInBackground(Void... voids) {
-            URL url = null;
+    inner class GetCharactersTask() : AsyncTask<Void?, Void?, List<Character>?>() {
+        protected override fun doInBackground(vararg voids: Void?): List<Character>? {
+            var url: URL? = null
             try {
-                url = new URL("https://rickandmortyapi.com/api/character/");
-            } catch (MalformedURLException e) {
-                e.printStackTrace();
+                url = URL("https://rickandmortyapi.com/api/character/")
+            } catch (e: MalformedURLException) {
+                e.printStackTrace()
             }
-
-            HttpURLConnection urlConnection = null;
+            var urlConnection: HttpURLConnection? = null
             try {
-                urlConnection = (HttpURLConnection) url.openConnection();
-
+                urlConnection = url!!.openConnection() as HttpURLConnection
                 try {
-                    InputStream in = urlConnection.getInputStream();
-
-                    Scanner scanner = new Scanner(in);
-                    scanner.useDelimiter("\\A");
-
-                    boolean hasInput = scanner.hasNext();
+                    val `in` = urlConnection.inputStream
+                    val scanner = Scanner(`in`)
+                    scanner.useDelimiter("\\A")
+                    val hasInput = scanner.hasNext()
                     if (hasInput) {
-                        String json = scanner.next();
-
+                        val json = scanner.next()
                         try {
-                            List<Character> list = new ArrayList<>();
-                            JSONObject object = new JSONObject(json);
-                            if (object.has("results")) {
-                                String results = object.optString("results");
-                                JSONArray jsonArray = new JSONArray(results);
-                                for (int i = 0; i < jsonArray.length(); i++) {
-                                    Character parsedCharacter = parseCharacterJson(jsonArray.getString(i));
-                                    if (parsedCharacter != null) list.add(parsedCharacter);
+                            val list: MutableList<Character> = ArrayList()
+                            val `object` = JSONObject(json)
+                            if (`object`.has("results")) {
+                                val results = `object`.optString("results")
+                                val jsonArray = JSONArray(results)
+                                for (i in 0 until jsonArray.length()) {
+                                    val parsedCharacter = parseCharacterJson(jsonArray.getString(i))
+                                    if (parsedCharacter != null) list.add(parsedCharacter)
                                 }
-                                return list;
+                                return list
                             }
-                            return list;
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                            return null;
+                            return list
+                        } catch (e: JSONException) {
+                            e.printStackTrace()
+                            return null
                         }
                     } else {
-                        return null;
+                        return null
                     }
                 } finally {
-                    urlConnection.disconnect();
+                    urlConnection!!.disconnect()
                 }
-            } catch (IOException e) {
-                e.printStackTrace();
+            } catch (e: IOException) {
+                e.printStackTrace()
             }
-            return null;
+            return null
         }
 
-        private Character parseCharacterJson(String string) {
+        private fun parseCharacterJson(string: String): Character? {
             try {
-                JSONObject object = new JSONObject(string);
-                Character c = new Character();
-                if (object.has("id")) {
-                    c.id = object.optInt("id");
+                val `object` = JSONObject(string)
+                val c = Character()
+                if (`object`.has("id")) {
+                    c.id = `object`.optInt("id")
                 }
-                if (object.has("name")) {
-                    c.name = object.optString("name");
+                if (`object`.has("name")) {
+                    c.name = `object`.optString("name")
                 }
-                if (object.has("status")) {
-                    c.status  = object.optString("status");
+                if (`object`.has("status")) {
+                    c.status = `object`.optString("status")
                 }
-                if (object.has("species")) {
-                    c.species = object.optString("species");
+                if (`object`.has("species")) {
+                    c.species = `object`.optString("species")
                 }
-                if (object.has("type")) {
-                    c.type = object.optString("type");
+                if (`object`.has("type")) {
+                    c.type = `object`.optString("type")
                 }
-                if (object.has("gender")) {
-                    c.gender = object.optString("gender");
+                if (`object`.has("gender")) {
+                    c.gender = `object`.optString("gender")
                 }
-                if (object.has("image")) {
-                    c.image = object.optString("image");
+                if (`object`.has("image")) {
+                    c.image = `object`.optString("image")
                 }
-                return c;
-            } catch (JSONException e) {
-                e.printStackTrace();
-                return null;
+                return c
+            } catch (e: JSONException) {
+                e.printStackTrace()
+                return null
             }
         }
     }

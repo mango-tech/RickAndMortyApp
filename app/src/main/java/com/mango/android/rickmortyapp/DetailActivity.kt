@@ -1,149 +1,137 @@
-package com.mango.android.rickmortyapp;
+package com.mango.android.rickmortyapp
 
-import android.content.Context;
-import android.content.Intent;
-import android.os.AsyncTask;
-import android.os.Bundle;
-import android.support.v4.app.FragmentManager;
-import android.support.v7.app.AppCompatActivity;
-import android.widget.TextView;
+import android.content.Context
+import androidx.appcompat.app.AppCompatActivity
+import android.widget.TextView
+import android.os.Bundle
+import com.mango.android.rickmortyapp.R
+import com.mango.android.rickmortyapp.DetailActivity
+import com.mango.android.rickmortyapp.DetailActivity.GetCharacterDetailTask
+import com.mango.android.rickmortyapp.ServerErrorDialogFragment
+import android.os.AsyncTask
+import org.json.JSONObject
+import android.content.Intent
+import org.json.JSONException
+import java.io.IOException
+import java.net.HttpURLConnection
+import java.net.MalformedURLException
+import java.net.URL
+import java.util.*
+import java.util.concurrent.ExecutionException
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.util.Scanner;
-import java.util.concurrent.ExecutionException;
-
-public class DetailActivity extends AppCompatActivity {
-
-    public static final String EXTRA_CHARACTER_ID = "EXTRA_CHARACTER_ID";
-
-    public static void start(Context context, int characterId) {
-        Intent intent = new Intent(context, DetailActivity.class);
-        intent.putExtra(EXTRA_CHARACTER_ID, characterId);
-        context.startActivity(intent);
+class DetailActivity : AppCompatActivity() {
+    private var mNameTv: TextView? = null
+    private var mStatusTv: TextView? = null
+    private var mSpeciesTv: TextView? = null
+    private var mTypeTv: TextView? = null
+    private var mGenderTv: TextView? = null
+    private var mCharacterId = 0
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.detail)
+        mNameTv = findViewById(R.id.tv_name_item)
+        mStatusTv = findViewById(R.id.tv_status_item)
+        mSpeciesTv = findViewById(R.id.tv_species_item)
+        mTypeTv = findViewById(R.id.tv_type_item)
+        mGenderTv = findViewById(R.id.tv_gender_item)
+        mCharacterId = intent.extras!!.getInt(EXTRA_CHARACTER_ID)
     }
 
-    private TextView mNameTv;
-    private TextView mStatusTv;
-    private TextView mSpeciesTv;
-    private TextView mTypeTv;
-    private TextView mGenderTv;
-
-    private int mCharacterId;
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.detail);
-
-        mNameTv = findViewById(R.id.tv_name_item);
-        mStatusTv = findViewById(R.id.tv_status_item);
-        mSpeciesTv = findViewById(R.id.tv_species_item);
-        mTypeTv = findViewById(R.id.tv_type_item);
-        mGenderTv = findViewById(R.id.tv_gender_item);
-
-        //noinspection ConstantConditions
-        mCharacterId = getIntent().getExtras().getInt(EXTRA_CHARACTER_ID);
-
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
+    override fun onResume() {
+        super.onResume()
         try {
-            Character character = new GetCharacterDetailTask().execute(mCharacterId).get();
-            mNameTv.setText(character.name);
-            mStatusTv.setText(character.status);
-            mSpeciesTv.setText(character.species);
-            mTypeTv.setText(character.type);
-            mGenderTv.setText(character.gender);
-        } catch (ExecutionException e) {
-            FragmentManager fragmentManager = getSupportFragmentManager();
+            val (_, name, status, species, type, gender) = GetCharacterDetailTask().execute(
+                mCharacterId
+            ).get()!!
+            mNameTv!!.text = name
+            mStatusTv!!.text = status
+            mSpeciesTv!!.text = species
+            mTypeTv!!.text = type
+            mGenderTv!!.text = gender
+        } catch (e: ExecutionException) {
+            val fragmentManager = supportFragmentManager
             fragmentManager.beginTransaction()
-                    .add(ServerErrorDialogFragment.newInstance(), null)
-                    .commitAllowingStateLoss();
-        } catch (InterruptedException e) {
-            FragmentManager fragmentManager = getSupportFragmentManager();
+                .add(ServerErrorDialogFragment.newInstance(), null)
+                .commitAllowingStateLoss()
+        } catch (e: InterruptedException) {
+            val fragmentManager = supportFragmentManager
             fragmentManager.beginTransaction()
-                    .add(ServerErrorDialogFragment.newInstance(), null)
-                    .commitAllowingStateLoss();        }
+                .add(ServerErrorDialogFragment.newInstance(), null)
+                .commitAllowingStateLoss()
+        }
     }
 
-    public class GetCharacterDetailTask extends AsyncTask<Integer, Void, Character> {
-
-
-        @Override
-        protected Character doInBackground(Integer... integers) {
-            URL url = null;
+    inner class GetCharacterDetailTask : AsyncTask<Int?, Void?, Character?>() {
+         override fun doInBackground(vararg integers: Int?): Character? {
+            var url: URL? = null
             try {
-                url = new URL("https://rickandmortyapi.com/api/character/" + integers[0]);
-            } catch (MalformedURLException e) {
-                e.printStackTrace();
+                url = URL("https://rickandmortyapi.com/api/character/" + integers[0])
+            } catch (e: MalformedURLException) {
+                e.printStackTrace()
             }
-
-            HttpURLConnection urlConnection = null;
+            var urlConnection: HttpURLConnection? = null
             try {
-                urlConnection = (HttpURLConnection) url.openConnection();
-
-                try {
-                    InputStream in = urlConnection.getInputStream();
-
-                    Scanner scanner = new Scanner(in);
-                    scanner.useDelimiter("\\A");
-
-                    boolean hasInput = scanner.hasNext();
+                urlConnection = url?.openConnection() as HttpURLConnection?
+                return try {
+                    val inputStream = urlConnection?.inputStream
+                    val scanner = Scanner(inputStream)
+                    scanner.useDelimiter("\\A")
+                    val hasInput = scanner.hasNext()
                     if (hasInput) {
-                        String json = scanner.next();
-                            return parseCharacterJson(json);
+                        val json = scanner.next()
+                        parseCharacterJson(json)
                     } else {
-                        return null;
+                        null
                     }
                 } finally {
-                    urlConnection.disconnect();
+                    urlConnection?.disconnect()
                 }
-            } catch (IOException e) {
-                e.printStackTrace();
+            } catch (e: IOException) {
+                e.printStackTrace()
             }
-            return null;
+            return null
         }
 
-        private Character parseCharacterJson(String string) {
-            try {
-                JSONObject object = new JSONObject(string);
-                Character c = new Character();
-                if (object.has("id")) {
-                    c.id = object.optInt("id");
+        private fun parseCharacterJson(string: String): Character? {
+            return try {
+                val jsonObject = JSONObject(string)
+                val c = Character()
+                if (jsonObject.has("id")) {
+                    c.id = jsonObject.optInt("id")
                 }
-                if (object.has("name")) {
-                    c.name = object.optString("name");
+                if (jsonObject.has("name")) {
+                    c.name = jsonObject.optString("name")
                 }
-                if (object.has("status")) {
-                    c.status  = object.optString("status");
+                if (jsonObject.has("status")) {
+                    c.status = jsonObject.optString("status")
                 }
-                if (object.has("species")) {
-                    c.species = object.optString("species");
+                if (jsonObject.has("species")) {
+                    c.species = jsonObject.optString("species")
                 }
-                if (object.has("type")) {
-                    c.type = object.optString("type");
+                if (jsonObject.has("type")) {
+                    c.type = jsonObject.optString("type")
                 }
-                if (object.has("gender")) {
-                    c.gender = object.optString("gender");
+                if (jsonObject.has("gender")) {
+                    c.gender = jsonObject.optString("gender")
                 }
-                if (object.has("image")) {
-                    c.image = object.optString("image");
+                if (jsonObject.has("image")) {
+                    c.image = jsonObject.optString("image")
                 }
-                return c;
-            } catch (JSONException e) {
-                e.printStackTrace();
-                return null;
+                c
+            } catch (e: JSONException) {
+                e.printStackTrace()
+                null
             }
         }
+    }
 
+    companion object {
+        const val EXTRA_CHARACTER_ID = "EXTRA_CHARACTER_ID"
+        @JvmStatic
+        fun start(context: Context, characterId: Int) {
+            val intent = Intent(context, DetailActivity::class.java)
+            intent.putExtra(EXTRA_CHARACTER_ID, characterId)
+            context.startActivity(intent)
+        }
     }
 }
