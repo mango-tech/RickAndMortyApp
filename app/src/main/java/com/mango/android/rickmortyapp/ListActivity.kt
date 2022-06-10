@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.mango.android.rickmortyapp.DetailActivity.Companion.start
 import com.mango.android.rickmortyapp.ListActivity.CharacterAdapter.CharacterViewHolder
+import com.mango.android.rickmortyapp.databinding.ActivityListBinding
 import org.json.JSONArray
 import org.json.JSONException
 import org.json.JSONObject
@@ -23,28 +24,27 @@ import java.util.*
 import java.util.concurrent.ExecutionException
 
 class ListActivity : AppCompatActivity() {
-    private var mRecyclerView: RecyclerView? = null
-    private var mCharacterAdapter: CharacterAdapter? = null
+    private lateinit var binding: ActivityListBinding
+    private var mCharacterAdapter: CharacterAdapter = CharacterAdapter(object : OnCharacterClickListener {
+        override fun onCharacterClicked(character: Character?) {
+            start(this@ListActivity, character!!.id)
+        }
+    })
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.list)
+        binding = ActivityListBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
         // init recycler view
-        mRecyclerView = findViewById(R.id.recycler)
-        mRecyclerView?.setLayoutManager(LinearLayoutManager(this))
-        mCharacterAdapter = CharacterAdapter(object : OnCharacterClickListener {
-            override fun onCharacterClicked(character: Character?) {
-                start(this@ListActivity, character!!.id)
-            }
-        })
-        mRecyclerView?.setAdapter(mCharacterAdapter)
+        binding.recycler.layoutManager = LinearLayoutManager(this)
+        binding.recycler.adapter = mCharacterAdapter
     }
 
     override fun onResume() {
         super.onResume()
         try {
             val characters: List<Character?>? = GetCharactersTask().execute().get()
-            mCharacterAdapter!!.bindData(characters)
+            mCharacterAdapter.bindData(characters)
         } catch (e: ExecutionException) {
             e.printStackTrace()
             val fragmentManager = supportFragmentManager
@@ -86,17 +86,17 @@ class ListActivity : AppCompatActivity() {
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CharacterViewHolder {
             val itemView = LayoutInflater.from(parent.context)
-                .inflate(R.layout.item, parent, false)
+                .inflate(R.layout.item_character, parent, false)
             return CharacterViewHolder(itemView)
         }
 
         override fun onBindViewHolder(holder: CharacterViewHolder, position: Int) {
             holder.mName.text = mCharacterList.get(position)!!.name
-            holder.itemView.setOnClickListener(View.OnClickListener {
+            holder.itemView.setOnClickListener {
                 mListener.onCharacterClicked(
                     mCharacterList[position]
                 )
-            })
+            }
         }
 
         override fun getItemCount(): Int {
@@ -105,7 +105,7 @@ class ListActivity : AppCompatActivity() {
     }
 
     inner class GetCharactersTask() : AsyncTask<Void?, Void?, List<Character>?>() {
-        protected override fun doInBackground(vararg voids: Void?): List<Character>? {
+         override fun doInBackground(vararg voids: Void?): List<Character>? {
             var url: URL? = null
             try {
                 url = URL("https://rickandmortyapi.com/api/character/")
@@ -114,10 +114,10 @@ class ListActivity : AppCompatActivity() {
             }
             var urlConnection: HttpURLConnection? = null
             try {
-                urlConnection = url!!.openConnection() as HttpURLConnection
+                urlConnection = url?.openConnection() as HttpURLConnection?
                 try {
-                    val `in` = urlConnection.inputStream
-                    val scanner = Scanner(`in`)
+                    val inputStream = urlConnection?.inputStream
+                    val scanner = Scanner(inputStream)
                     scanner.useDelimiter("\\A")
                     val hasInput = scanner.hasNext()
                     if (hasInput) {
@@ -143,7 +143,7 @@ class ListActivity : AppCompatActivity() {
                         return null
                     }
                 } finally {
-                    urlConnection!!.disconnect()
+                    urlConnection?.disconnect()
                 }
             } catch (e: IOException) {
                 e.printStackTrace()

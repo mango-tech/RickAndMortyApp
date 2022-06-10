@@ -4,13 +4,10 @@ import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import android.widget.TextView
 import android.os.Bundle
-import com.mango.android.rickmortyapp.R
-import com.mango.android.rickmortyapp.DetailActivity
-import com.mango.android.rickmortyapp.DetailActivity.GetCharacterDetailTask
-import com.mango.android.rickmortyapp.ServerErrorDialogFragment
 import android.os.AsyncTask
 import org.json.JSONObject
 import android.content.Intent
+import com.mango.android.rickmortyapp.databinding.ActivityDetailBinding
 import org.json.JSONException
 import java.io.IOException
 import java.net.HttpURLConnection
@@ -20,34 +17,25 @@ import java.util.*
 import java.util.concurrent.ExecutionException
 
 class DetailActivity : AppCompatActivity() {
-    private var mNameTv: TextView? = null
-    private var mStatusTv: TextView? = null
-    private var mSpeciesTv: TextView? = null
-    private var mTypeTv: TextView? = null
-    private var mGenderTv: TextView? = null
+    private lateinit var binding: ActivityDetailBinding
     private var mCharacterId = 0
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.detail)
-        mNameTv = findViewById(R.id.tv_name_item)
-        mStatusTv = findViewById(R.id.tv_status_item)
-        mSpeciesTv = findViewById(R.id.tv_species_item)
-        mTypeTv = findViewById(R.id.tv_type_item)
-        mGenderTv = findViewById(R.id.tv_gender_item)
+        binding = ActivityDetailBinding.inflate(layoutInflater)
+        setContentView(binding.root)
         mCharacterId = intent.extras!!.getInt(EXTRA_CHARACTER_ID)
     }
 
     override fun onResume() {
         super.onResume()
         try {
-            val (_, name, status, species, type, gender) = GetCharacterDetailTask().execute(
+            val character = GetCharacterDetailTask().execute(
                 mCharacterId
-            ).get()!!
-            mNameTv!!.text = name
-            mStatusTv!!.text = status
-            mSpeciesTv!!.text = species
-            mTypeTv!!.text = type
-            mGenderTv!!.text = gender
+            ).get()
+            character?.let {
+                binding.character = it
+            }
         } catch (e: ExecutionException) {
             val fragmentManager = supportFragmentManager
             fragmentManager.beginTransaction()
