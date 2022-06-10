@@ -37,5 +37,8 @@ dependencies {
     androidTestImplementation "androidx.test.ext:junit:$junit_ext_version"
     androidTestImplementation "androidx.test.espresso:espresso-core:$espresso_version"
 
+    // Koin Core features
+    implementation "io.insert-koin:koin-android:$koin_version"
+
     implementation project(':domain')
 }
