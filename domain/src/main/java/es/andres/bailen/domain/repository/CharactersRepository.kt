@@ -6,7 +6,6 @@ import es.andres.bailen.domain.models.DataResult
 import kotlinx.coroutines.flow.Flow
 
 interface CharactersRepository {
-    suspend fun getCharacters(): DataResult<List<CharacterModel>>
 
     fun getCharactersPaged(): Flow<PagingData<CharacterModel>>
 

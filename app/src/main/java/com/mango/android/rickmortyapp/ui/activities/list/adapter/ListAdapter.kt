@@ -12,11 +12,6 @@ import java.util.ArrayList
 class CharacterAdapter(private val mListener: OnCharacterClickListener) :
     PagingDataAdapter<CharacterModel, CharacterViewHolder>(DIFF_CHARACTER_UTIL) {
 
-    /*fun bindData(characters: List<CharacterModel?>?) {
-        mCharacterList = ArrayList(characters)
-        notifyDataSetChanged()
-    }*/
-
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CharacterViewHolder {
         return CharacterViewHolder.from(parent)
     }
@@ -24,10 +19,6 @@ class CharacterAdapter(private val mListener: OnCharacterClickListener) :
     override fun onBindViewHolder(holder: CharacterViewHolder, position: Int) {
         holder.bind(getItem(position), mListener)
     }
-/*
-    override fun getItemCount(): Int {
-        return mCharacterList.size
-    }*/
 
     companion object {
         val DIFF_CHARACTER_UTIL = object: DiffUtil.ItemCallback<CharacterModel>() {

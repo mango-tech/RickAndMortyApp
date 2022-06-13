@@ -9,10 +9,6 @@ import kotlinx.coroutines.flow.Flow
 class CharacterListUseCaseImpl(private val charactersRepository: CharactersRepository) :
     CharacterListUseCase {
 
-    override suspend fun getCharacterList(): DataResult<List<CharacterModel>> {
-        return charactersRepository.getCharacters()
-    }
-
     override fun getCharacterListPaged(): Flow<PagingData<CharacterModel>> {
         return charactersRepository.getCharactersPaged()
     }

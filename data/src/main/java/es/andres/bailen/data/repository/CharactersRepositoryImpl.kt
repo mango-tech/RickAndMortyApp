@@ -15,17 +15,6 @@ import kotlinx.coroutines.flow.flowOn
 
 class CharactersRepositoryImpl(private val rickyMortyApi: RickyMortyApi) : CharactersRepository {
 
-    override suspend fun getCharacters(): DataResult<List<CharacterModel>> {
-        return try {
-            DataResult.success(rickyMortyApi.getCharactersList(0).results.map {
-                mapCharacterDataToModel(it)
-            })
-        } catch (e: Exception) {
-            e.printStackTrace()
-            DataResult.error()
-        }
-    }
-
     private val characterPageConfig = PagingConfig(
         pageSize = 1,
         prefetchDistance = 5,

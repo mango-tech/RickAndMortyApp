@@ -7,8 +7,6 @@ import kotlinx.coroutines.flow.Flow
 
 interface CharacterListUseCase {
 
-    suspend fun getCharacterList(): DataResult<List<CharacterModel>>
-
     fun getCharacterListPaged(): Flow<PagingData<CharacterModel>>
 
     suspend fun getCharacterDetail(characterId: String): DataResult<CharacterModel>
