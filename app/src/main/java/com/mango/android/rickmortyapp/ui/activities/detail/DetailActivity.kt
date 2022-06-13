@@ -1,9 +1,13 @@
 package com.mango.android.rickmortyapp.ui.activities.detail
 
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityOptionsCompat
+import androidx.core.view.ViewCompat
 import androidx.lifecycle.lifecycleScope
 import com.mango.android.rickmortyapp.databinding.ActivityDetailBinding
 import com.mango.android.rickmortyapp.ui.dialogs.ServerErrorDialogFragment
@@ -25,6 +29,11 @@ class DetailActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityDetailBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        ViewCompat.setTransitionName(
+            binding.imgAvatar,
+            "profileImg"
+        )
+
         mCharacterId = intent.extras!!.getInt(EXTRA_CHARACTER_ID)
     }
 
@@ -62,10 +71,16 @@ class DetailActivity : AppCompatActivity() {
         const val EXTRA_CHARACTER_ID = "EXTRA_CHARACTER_ID"
 
         @JvmStatic
-        fun start(context: Context, characterId: Int) {
-            val intent = Intent(context, DetailActivity::class.java)
+        fun start(activity: Activity, characterId: Int, imageView: ImageView?) {
+            val intent = Intent(activity, DetailActivity::class.java)
             intent.putExtra(EXTRA_CHARACTER_ID, characterId)
-            context.startActivity(intent)
+            val options = imageView?.let {
+                ActivityOptionsCompat.makeSceneTransitionAnimation(activity, it, "profileImg")
+            } ?: run {
+                null
+            }
+
+            activity.startActivity(intent, options?.toBundle())
         }
     }
 }

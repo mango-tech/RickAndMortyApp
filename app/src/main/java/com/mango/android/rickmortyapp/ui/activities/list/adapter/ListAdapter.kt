@@ -1,6 +1,7 @@
 package com.mango.android.rickmortyapp.ui.activities.list.adapter
 
 import android.view.ViewGroup
+import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
 import es.andres.bailen.domain.models.CharacterModel
 import java.util.ArrayList
@@ -20,12 +21,8 @@ class CharacterAdapter(private val mListener: OnCharacterClickListener) :
     }
 
     override fun onBindViewHolder(holder: CharacterViewHolder, position: Int) {
-        holder.bind(mCharacterList[position])
-        holder.itemView.setOnClickListener {
-            mListener.onCharacterClicked(
-                mCharacterList[position]
-            )
-        }
+        holder.bind(mCharacterList[position], mListener)
+
     }
 
     override fun getItemCount(): Int {
@@ -36,7 +33,7 @@ class CharacterAdapter(private val mListener: OnCharacterClickListener) :
     // RecyclerView adapter
     // --------------------------------------------------------------------------------------------
     interface OnCharacterClickListener {
-        fun onCharacterClicked(character: CharacterModel?)
+        fun onCharacterClicked(character: CharacterModel?, imageView: ImageView? = null)
     }
 
 }

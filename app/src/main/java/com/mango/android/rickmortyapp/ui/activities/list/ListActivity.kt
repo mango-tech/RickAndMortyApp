@@ -1,6 +1,7 @@
 package com.mango.android.rickmortyapp.ui.activities.list
 
 import android.os.Bundle
+import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -20,8 +21,8 @@ class ListActivity : AppCompatActivity() {
     private lateinit var binding: ActivityListBinding
     private var mCharacterAdapter: CharacterAdapter =
         CharacterAdapter(object : CharacterAdapter.OnCharacterClickListener {
-            override fun onCharacterClicked(character: CharacterModel?) {
-                start(this@ListActivity, character!!.id)
+            override fun onCharacterClicked(character: CharacterModel?, imageView: ImageView?) {
+                start(this@ListActivity, character!!.id, imageView)
             }
         })
 
@@ -36,8 +37,8 @@ class ListActivity : AppCompatActivity() {
         binding.recycler.adapter = mCharacterAdapter
     }
 
-    override fun onResume() {
-        super.onResume()
+    override fun onStart() {
+        super.onStart()
         lifecycleScope.launch(Dispatchers.IO) {
             try {
                 val response = viewModel.getCharacterList()

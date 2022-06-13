@@ -12,12 +12,17 @@ import com.mango.android.rickmortyapp.databinding.ItemCharacterBinding
 import es.andres.bailen.domain.models.CharacterModel
 
 
-class CharacterViewHolder(private val binding: ItemCharacterBinding) : RecyclerView.ViewHolder(binding.root) {
+class CharacterViewHolder(private val binding: ItemCharacterBinding) :
+    RecyclerView.ViewHolder(binding.root) {
 
-    fun bind(characterModel: CharacterModel?) {
+    fun bind(characterModel: CharacterModel?, listener: CharacterAdapter.OnCharacterClickListener) {
         binding.character = characterModel
+        binding.root.setOnClickListener {
+            listener.onCharacterClicked(
+                characterModel, binding.imgAvatar
+            )
+        }
     }
-
 
 
     companion object {
