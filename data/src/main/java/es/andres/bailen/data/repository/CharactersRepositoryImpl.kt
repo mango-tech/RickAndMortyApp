@@ -2,6 +2,7 @@ package es.andres.bailen.data.repository
 
 import android.os.AsyncTask
 import es.andres.bailen.domain.models.CharacterModel
+import es.andres.bailen.domain.models.DataResult
 import es.andres.bailen.domain.repository.CharactersRepository
 import org.json.JSONArray
 import org.json.JSONException
@@ -13,8 +14,12 @@ import java.net.URL
 import java.util.*
 
 class CharactersRepositoryImpl: CharactersRepository {
-    override fun getCharacters(): List<CharacterModel> {
-        return GetCharactersTask().execute().get() ?: listOf()
+    override fun getCharacters(): DataResult<List<CharacterModel>> {
+        return GetCharactersTask().execute().get()?.let {
+            DataResult.success(it)
+        } ?: run {
+            DataResult.error(errorType = DataResult.ErrorType.NETWORK)
+        }
     }
 
     inner class GetCharactersTask() : AsyncTask<Void?, Void?, List<CharacterModel>?>() {

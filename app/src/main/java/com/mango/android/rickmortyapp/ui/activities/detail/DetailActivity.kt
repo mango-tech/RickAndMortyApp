@@ -6,6 +6,7 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.mango.android.rickmortyapp.databinding.ActivityDetailBinding
 import com.mango.android.rickmortyapp.ui.dialogs.ServerErrorDialogFragment
+import com.mango.android.rickmortyapp.ui.dialogs.getServerErrorDialog
 import com.mango.android.rickmortyapp.ui.viewmodel.details.DetailViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.util.concurrent.ExecutionException
@@ -30,15 +31,9 @@ class DetailActivity : AppCompatActivity() {
                 binding.character = it
             }
         } catch (e: ExecutionException) {
-            val fragmentManager = supportFragmentManager
-            fragmentManager.beginTransaction()
-                .add(ServerErrorDialogFragment.newInstance(), null)
-                .commitAllowingStateLoss()
+            getServerErrorDialog().show()
         } catch (e: InterruptedException) {
-            val fragmentManager = supportFragmentManager
-            fragmentManager.beginTransaction()
-                .add(ServerErrorDialogFragment.newInstance(), null)
-                .commitAllowingStateLoss()
+            getServerErrorDialog().show()
         }
     }
 

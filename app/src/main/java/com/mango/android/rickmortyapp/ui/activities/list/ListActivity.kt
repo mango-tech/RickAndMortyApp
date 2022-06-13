@@ -6,8 +6,10 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.mango.android.rickmortyapp.databinding.ActivityListBinding
 import com.mango.android.rickmortyapp.ui.activities.detail.DetailActivity.Companion.start
 import com.mango.android.rickmortyapp.ui.dialogs.ServerErrorDialogFragment
+import com.mango.android.rickmortyapp.ui.dialogs.getServerErrorDialog
 import com.mango.android.rickmortyapp.ui.viewmodel.list.ListViewModel
 import es.andres.bailen.domain.models.CharacterModel
+import es.andres.bailen.domain.models.DataResult
 import java.util.*
 import java.util.concurrent.ExecutionException
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -35,20 +37,22 @@ class ListActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
         try {
-            val characters: List<CharacterModel?> = viewModel.getCharacterList()
-            mCharacterAdapter.bindData(characters)
+            val response = viewModel.getCharacterList()
+            when (response.status) {
+                DataResult.Status.SUCCESS -> {
+                    mCharacterAdapter.bindData(response.data)
+                }
+                DataResult.Status.ERROR -> {
+                    getServerErrorDialog().show()
+                }
+            }
+
         } catch (e: ExecutionException) {
             e.printStackTrace()
-            val fragmentManager = supportFragmentManager
-            fragmentManager.beginTransaction()
-                .add(ServerErrorDialogFragment.newInstance(), null)
-                .commitAllowingStateLoss()
+            getServerErrorDialog().show()
         } catch (e: InterruptedException) {
             e.printStackTrace()
-            val fragmentManager = supportFragmentManager
-            fragmentManager.beginTransaction()
-                .add(ServerErrorDialogFragment.newInstance(), null)
-                .commitAllowingStateLoss()
+            getServerErrorDialog().show()
         }
     }
 
