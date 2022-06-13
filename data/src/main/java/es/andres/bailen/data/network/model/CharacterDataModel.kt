@@ -1,4 +1,4 @@
-package es.andres.bailen.data.model
+package es.andres.bailen.data.network.model
 
 import com.google.gson.annotations.SerializedName
 

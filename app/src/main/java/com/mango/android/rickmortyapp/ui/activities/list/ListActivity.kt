@@ -2,6 +2,7 @@ package com.mango.android.rickmortyapp.ui.activities.list
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.mango.android.rickmortyapp.databinding.ActivityListBinding
 import com.mango.android.rickmortyapp.ui.activities.detail.DetailActivity.Companion.start
@@ -10,6 +11,8 @@ import com.mango.android.rickmortyapp.ui.dialogs.getServerErrorDialog
 import com.mango.android.rickmortyapp.ui.viewmodel.list.ListViewModel
 import es.andres.bailen.domain.models.CharacterModel
 import es.andres.bailen.domain.models.DataResult
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import java.util.*
 import java.util.concurrent.ExecutionException
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -36,25 +39,27 @@ class ListActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
-        try {
-            val response = viewModel.getCharacterList()
-            when (response.status) {
-                DataResult.Status.SUCCESS -> {
-                    mCharacterAdapter.bindData(response.data)
+        lifecycleScope.launch(Dispatchers.IO) {
+            try {
+                val response = viewModel.getCharacterList()
+                binding.root.post {
+                    when (response.status) {
+                        DataResult.Status.SUCCESS -> {
+                            mCharacterAdapter.bindData(response.data)
+                        }
+                        DataResult.Status.ERROR -> {
+                            getServerErrorDialog().show()
+                        }
+                    }
                 }
-                DataResult.Status.ERROR -> {
-                    getServerErrorDialog().show()
-                }
+            } catch (e: ExecutionException) {
+                e.printStackTrace()
+                binding.root.post { getServerErrorDialog().show() }
+            } catch (e: InterruptedException) {
+                e.printStackTrace()
+                binding.root.post { getServerErrorDialog().show() }
             }
-
-        } catch (e: ExecutionException) {
-            e.printStackTrace()
-            getServerErrorDialog().show()
-        } catch (e: InterruptedException) {
-            e.printStackTrace()
-            getServerErrorDialog().show()
         }
     }
-
 
 }

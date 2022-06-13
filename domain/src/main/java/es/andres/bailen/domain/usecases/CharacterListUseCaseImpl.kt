@@ -7,7 +7,7 @@ import es.andres.bailen.domain.repository.CharactersRepository
 class CharacterListUseCaseImpl(private val charactersRepository: CharactersRepository) :
     CharacterListUseCase {
 
-    override fun getCharacterList(): DataResult<List<CharacterModel>> {
+    override suspend fun getCharacterList(): DataResult<List<CharacterModel>> {
         return charactersRepository.getCharacters()
     }
 

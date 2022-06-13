@@ -5,7 +5,7 @@ import es.andres.bailen.domain.models.DataResult
 
 interface CharacterListUseCase {
 
-    fun getCharacterList(): DataResult<List<CharacterModel>>
+    suspend fun getCharacterList(): DataResult<List<CharacterModel>>
 
     suspend fun getCharacterDetail(characterId: String): DataResult<CharacterModel>
 }

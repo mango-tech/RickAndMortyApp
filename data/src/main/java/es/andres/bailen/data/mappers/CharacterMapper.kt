@@ -1,6 +1,6 @@
 package es.andres.bailen.data.mappers
 
-import es.andres.bailen.data.model.CharacterDataModel
+import es.andres.bailen.data.network.model.CharacterDataModel
 import es.andres.bailen.domain.models.CharacterModel
 
 class CharacterMapper {

@@ -7,7 +7,7 @@ import es.andres.bailen.domain.usecases.CharacterListUseCase
 
 class ListViewModel(private val useCase: CharacterListUseCase): ViewModel() {
 
-    fun getCharacterList(): DataResult<List<CharacterModel>> {
+    suspend fun getCharacterList(): DataResult<List<CharacterModel>> {
         return useCase.getCharacterList()
     }
 }
