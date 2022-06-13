@@ -1,13 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout>
+<layout xmlns:app="http://schemas.android.com/apk/res-auto">
+
     <data>
-        <variable name="character" type="es.andres.bailen.domain.models.CharacterModel"/>
+
+        <variable
+            name="character"
+            type="es.andres.bailen.domain.models.CharacterModel" />
     </data>
+
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:avatarImage="@{character.image}" />
 
         <TextView
             android:id="@+id/tv_name_item"

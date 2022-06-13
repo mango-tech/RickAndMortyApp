@@ -6,14 +6,13 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.mango.android.rickmortyapp.databinding.ActivityListBinding
 import com.mango.android.rickmortyapp.ui.activities.detail.DetailActivity.Companion.start
-import com.mango.android.rickmortyapp.ui.dialogs.ServerErrorDialogFragment
+import com.mango.android.rickmortyapp.ui.activities.list.adapter.CharacterAdapter
 import com.mango.android.rickmortyapp.ui.dialogs.getServerErrorDialog
 import com.mango.android.rickmortyapp.ui.viewmodel.list.ListViewModel
 import es.andres.bailen.domain.models.CharacterModel
 import es.andres.bailen.domain.models.DataResult
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import java.util.*
 import java.util.concurrent.ExecutionException
 import org.koin.androidx.viewmodel.ext.android.viewModel
 

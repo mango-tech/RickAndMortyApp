@@ -1,25 +1,14 @@
-package com.mango.android.rickmortyapp.ui.activities.list
+package com.mango.android.rickmortyapp.ui.activities.list.adapter
 
-import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.mango.android.rickmortyapp.R
 import es.andres.bailen.domain.models.CharacterModel
 import java.util.ArrayList
 
 class CharacterAdapter(private val mListener: OnCharacterClickListener) :
-    RecyclerView.Adapter<CharacterAdapter.CharacterViewHolder>() {
+    RecyclerView.Adapter<CharacterViewHolder>() {
     private var mCharacterList: List<CharacterModel?> = ArrayList(0)
 
-    inner class CharacterViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        var mName: TextView
-
-        init {
-            mName = view.findViewById(R.id.tv_name)
-        }
-    }
 
     fun bindData(characters: List<CharacterModel?>?) {
         mCharacterList = ArrayList(characters)
@@ -27,13 +16,11 @@ class CharacterAdapter(private val mListener: OnCharacterClickListener) :
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CharacterViewHolder {
-        val itemView = LayoutInflater.from(parent.context)
-            .inflate(R.layout.item_character, parent, false)
-        return CharacterViewHolder(itemView)
+        return CharacterViewHolder.from(parent)
     }
 
     override fun onBindViewHolder(holder: CharacterViewHolder, position: Int) {
-        holder.mName.text = mCharacterList.get(position)!!.name
+        holder.bind(mCharacterList[position])
         holder.itemView.setOnClickListener {
             mListener.onCharacterClicked(
                 mCharacterList[position]
