@@ -7,5 +7,5 @@ interface CharacterListUseCase {
 
     fun getCharacterList(): DataResult<List<CharacterModel>>
 
-    fun getCharacterDetail(characterId: String): CharacterModel?
+    suspend fun getCharacterDetail(characterId: String): DataResult<CharacterModel>
 }

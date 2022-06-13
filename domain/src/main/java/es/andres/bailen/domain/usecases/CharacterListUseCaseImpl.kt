@@ -11,7 +11,7 @@ class CharacterListUseCaseImpl(private val charactersRepository: CharactersRepos
         return charactersRepository.getCharacters()
     }
 
-    override fun getCharacterDetail(characterId: String): CharacterModel? {
+    override suspend fun getCharacterDetail(characterId: String): DataResult<CharacterModel> {
         return charactersRepository.getCharacterDetail(characterId)
     }
 }

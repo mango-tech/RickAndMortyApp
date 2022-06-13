@@ -17,7 +17,15 @@ android {
     }
 
     buildTypes {
+
+        debug {
+            buildConfigField "String", "API_URL", "\"https://rickandmortyapi.com/api/\""
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+
         release {
+            buildConfigField "String", "API_URL", "\"https://rickandmortyapi.com/api/\""
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
@@ -39,6 +47,11 @@ dependencies {
 
     // Koin Core features
     implementation "io.insert-koin:koin-android:$koin_version"
+
+    //Retrofit
+    implementation "com.squareup.retrofit2:retrofit:$retrofit_version"
+    //JSON Converter
+    implementation "com.squareup.retrofit2:converter-gson:$gson_converter_version"
 
     implementation project(':domain')
 }

@@ -2,7 +2,7 @@ package com.mango.android.rickmortyapp
 
 import android.app.Application
 import com.mango.android.rickmortyapp.di.appModules
-import es.andres.bailen.data.di.dataModules
+import es.andres.bailen.data.repository.di.dataModules
 import es.andres.bailen.domain.di.domainModules
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger

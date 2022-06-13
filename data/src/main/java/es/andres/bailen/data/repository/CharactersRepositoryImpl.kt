@@ -1,6 +1,8 @@
 package es.andres.bailen.data.repository
 
 import android.os.AsyncTask
+import es.andres.bailen.data.mappers.CharacterMapper
+import es.andres.bailen.data.network.api.RickyMortyApi
 import es.andres.bailen.domain.models.CharacterModel
 import es.andres.bailen.domain.models.DataResult
 import es.andres.bailen.domain.repository.CharactersRepository
@@ -13,7 +15,7 @@ import java.net.MalformedURLException
 import java.net.URL
 import java.util.*
 
-class CharactersRepositoryImpl: CharactersRepository {
+class CharactersRepositoryImpl(private val rickyMortyApi: RickyMortyApi) : CharactersRepository {
     override fun getCharacters(): DataResult<List<CharacterModel>> {
         return GetCharactersTask().execute().get()?.let {
             DataResult.success(it)
@@ -21,6 +23,7 @@ class CharactersRepositoryImpl: CharactersRepository {
             DataResult.error(errorType = DataResult.ErrorType.NETWORK)
         }
     }
+
 
     inner class GetCharactersTask() : AsyncTask<Void?, Void?, List<CharacterModel>?>() {
         override fun doInBackground(vararg voids: Void?): List<CharacterModel>? {
@@ -102,72 +105,18 @@ class CharactersRepositoryImpl: CharactersRepository {
         }
     }
 
-    override fun getCharacterDetail(characterId: String): CharacterModel? {
-        return GetCharacterDetailTask().execute(characterId).get()
-    }
-
-
-    inner class GetCharacterDetailTask : AsyncTask<String?, Void?, CharacterModel?>() {
-        override fun doInBackground(vararg integers: String?): CharacterModel? {
-            var url: URL? = null
-            try {
-                url = URL("https://rickandmortyapi.com/api/character/" + integers[0])
-            } catch (e: MalformedURLException) {
-                e.printStackTrace()
-            }
-            var urlConnection: HttpURLConnection? = null
-            try {
-                urlConnection = url?.openConnection() as HttpURLConnection?
-                return try {
-                    val inputStream = urlConnection?.inputStream
-                    val scanner = Scanner(inputStream)
-                    scanner.useDelimiter("\\A")
-                    val hasInput = scanner.hasNext()
-                    if (hasInput) {
-                        val json = scanner.next()
-                        parseCharacterJson(json)
-                    } else {
-                        null
-                    }
-                } finally {
-                    urlConnection?.disconnect()
-                }
-            } catch (e: IOException) {
-                e.printStackTrace()
-            }
-            return null
-        }
-
-        private fun parseCharacterJson(string: String): CharacterModel? {
-            return try {
-                val jsonObject = JSONObject(string)
-                val c = CharacterModel()
-                if (jsonObject.has("id")) {
-                    c.id = jsonObject.optInt("id")
-                }
-                if (jsonObject.has("name")) {
-                    c.name = jsonObject.optString("name")
-                }
-                if (jsonObject.has("status")) {
-                    c.status = jsonObject.optString("status")
-                }
-                if (jsonObject.has("species")) {
-                    c.species = jsonObject.optString("species")
-                }
-                if (jsonObject.has("type")) {
-                    c.type = jsonObject.optString("type")
-                }
-                if (jsonObject.has("gender")) {
-                    c.gender = jsonObject.optString("gender")
-                }
-                if (jsonObject.has("image")) {
-                    c.image = jsonObject.optString("image")
-                }
-                c
-            } catch (e: JSONException) {
-                e.printStackTrace()
-                null
-            }
+    override suspend fun getCharacterDetail(characterId: String): DataResult<CharacterModel> {
+        return try {
+            DataResult.success(
+                CharacterMapper().mapCharacterDataToModel(
+                    rickyMortyApi.getCharacter(
+                        characterId
+                    )
+                )
+            )
+        } catch (e: Exception) {
+            e.printStackTrace()
+            DataResult.error()
         }
     }
 }

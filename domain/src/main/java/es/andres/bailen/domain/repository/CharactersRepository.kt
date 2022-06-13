@@ -6,5 +6,5 @@ import es.andres.bailen.domain.models.DataResult
 interface CharactersRepository {
     fun getCharacters(): DataResult<List<CharacterModel>>
 
-    fun getCharacterDetail(characterId: String): CharacterModel?
+    suspend fun getCharacterDetail(characterId: String): DataResult<CharacterModel>
 }
