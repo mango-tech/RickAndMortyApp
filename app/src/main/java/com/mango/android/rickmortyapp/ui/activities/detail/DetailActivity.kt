@@ -5,8 +5,10 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.widget.ImageView
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityOptionsCompat
+import androidx.core.util.Pair
 import androidx.core.view.ViewCompat
 import androidx.lifecycle.lifecycleScope
 import com.mango.android.rickmortyapp.databinding.ActivityDetailBinding
@@ -31,9 +33,12 @@ class DetailActivity : AppCompatActivity() {
         setContentView(binding.root)
         ViewCompat.setTransitionName(
             binding.imgAvatar,
-            "profileImg"
+            TRANSITION_IMG_ID
         )
-
+        ViewCompat.setTransitionName(
+            binding.tvNameItem,
+            TRANSITION_NAME_ID
+        )
         mCharacterId = intent.extras!!.getInt(EXTRA_CHARACTER_ID)
     }
 
@@ -49,7 +54,6 @@ class DetailActivity : AppCompatActivity() {
                         }
                         DataResult.Status.ERROR -> {
                             getServerErrorDialog().show()
-
                         }
                     }
                 }
@@ -69,18 +73,25 @@ class DetailActivity : AppCompatActivity() {
 
     companion object {
         const val EXTRA_CHARACTER_ID = "EXTRA_CHARACTER_ID"
+        const val TRANSITION_IMG_ID = "profileImg"
+        const val TRANSITION_NAME_ID = "nameTxt"
 
         @JvmStatic
-        fun start(activity: Activity, characterId: Int, imageView: ImageView?) {
+        fun start(
+            activity: Activity,
+            characterId: Int,
+            imageView: ImageView,
+            nameTxtView: TextView
+        ) {
             val intent = Intent(activity, DetailActivity::class.java)
             intent.putExtra(EXTRA_CHARACTER_ID, characterId)
-            val options = imageView?.let {
-                ActivityOptionsCompat.makeSceneTransitionAnimation(activity, it, "profileImg")
-            } ?: run {
-                null
-            }
+            val options = ActivityOptionsCompat.makeSceneTransitionAnimation(
+                activity,
+                Pair(imageView, TRANSITION_IMG_ID),
+                Pair(nameTxtView, TRANSITION_NAME_ID)
+            )
 
-            activity.startActivity(intent, options?.toBundle())
+            activity.startActivity(intent, options.toBundle())
         }
     }
 }

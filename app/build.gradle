@@ -43,6 +43,9 @@ dependencies {
     implementation "androidx.recyclerview:recyclerview:$recycler_view_version"
     implementation"androidx.constraintlayout:constraintlayout:$constraint_layout_version"
 
+    //paging
+    implementation("androidx.paging:paging-runtime:$paging_version")
+
     implementation project(':domain')
     implementation project(':data') //only used for networkModule
 

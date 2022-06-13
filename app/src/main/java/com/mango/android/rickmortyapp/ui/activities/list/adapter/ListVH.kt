@@ -1,13 +1,8 @@
 package com.mango.android.rickmortyapp.ui.activities.list.adapter
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.TextView
-import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.mango.android.rickmortyapp.R
 import com.mango.android.rickmortyapp.databinding.ItemCharacterBinding
 import es.andres.bailen.domain.models.CharacterModel
 
@@ -19,7 +14,7 @@ class CharacterViewHolder(private val binding: ItemCharacterBinding) :
         binding.character = characterModel
         binding.root.setOnClickListener {
             listener.onCharacterClicked(
-                characterModel, binding.imgAvatar
+                characterModel, binding.imgAvatar, binding.tvName
             )
         }
     }

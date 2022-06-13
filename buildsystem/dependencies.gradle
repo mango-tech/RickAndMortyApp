@@ -18,6 +18,7 @@ ext {
     recycler_view_version = "1.2.1"
     glide_version = "4.13.0"
     constraint_layout_version = "2.1.4"
+    paging_version = "3.1.1"
 
     //test
     junit_version = "4.13.2"

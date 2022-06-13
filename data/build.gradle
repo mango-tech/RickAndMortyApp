@@ -48,6 +48,8 @@ dependencies {
     // Koin Core features
     implementation "io.insert-koin:koin-android:$koin_version"
 
+    //paging
+    implementation("androidx.paging:paging-runtime:$paging_version")
     //Retrofit
     implementation "com.squareup.retrofit2:retrofit:$retrofit_version"
     //JSON Converter
