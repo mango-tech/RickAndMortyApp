@@ -42,8 +42,11 @@ android {
 dependencies {
 
     testImplementation "junit:junit:$junit_version"
+    testImplementation 'org.junit.jupiter:junit-jupiter'
     androidTestImplementation "androidx.test.ext:junit:$junit_ext_version"
     androidTestImplementation "androidx.test.espresso:espresso-core:$espresso_version"
+    testImplementation "org.robolectric:robolectric:$roboelectric_version"
+
 
     // Koin Core features
     implementation "io.insert-koin:koin-android:$koin_version"
