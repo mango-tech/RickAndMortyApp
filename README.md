@@ -11,9 +11,9 @@ Below you can see the technical stack we use at Mango. It would be nice if you'r
 
 - Kotlin
 - Kotlin DSL
-- MVVM + Databinding
-- MVI + Databinding
-- MVVM + Compose
+- MVVM + Databinding (old features)
+- MVI + Databinding (old features)
+- MVVM + Compose 
 - Architecture components
 - Retrofit
 - Coroutines (Although RxJava remains in some parts...)
@@ -21,10 +21,10 @@ Below you can see the technical stack we use at Mango. It would be nice if you'r
 - Picasso
 - Jackson
 - Timber
-- Local store (realm, shared preferences)
+- Local store (realm, shared preferences, data store)
 - ConstraintLayout
-- Custom components
-- Deeplinks
+- Custom components designed by UX team
+- Deep links and App links
 - App modularization is in our roadmap. If you have experience in this area, you can show us what you know, up to you.
 
 If you're not comfortable using that tools, no worries! Code as you fancy. The purpose is just having a space for discussing technical stuff together. For further doubts, please contact us at eqp.ecommerce.movilidad@mango.com
