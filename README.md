@@ -11,7 +11,9 @@ Below you can see the technical stack we use at Mango. It would be nice if you'r
 
 - Kotlin
 - Kotlin DSL
-- MVVM + Databinding (We're experimenting with MVI)
+- MVVM + Databinding
+- MVI + Databinding
+- MVVM + Compose
 - Architecture components
 - Retrofit
 - Coroutines (Although RxJava remains in some parts...)
@@ -21,8 +23,7 @@ Below you can see the technical stack we use at Mango. It would be nice if you'r
 - Timber
 - Local store (realm, shared preferences)
 - ConstraintLayout
-- Custom styles
-- Compose (Roadmap :rocket:)
+- Custom components
 - Deeplinks
 - App modularization is in our roadmap. If you have experience in this area, you can show us what you know, up to you.
 
